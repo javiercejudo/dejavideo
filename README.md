@@ -18,10 +18,10 @@ Access the app by a local URL like `192.168.?.?/dejavideo`.
 
 ## Main features:
 
-- Supports* MP4, OGG and WEBM.
+- Supports[1] MP4, OGG and WEBM.
 - Indefinitly recursive listings.
 - Responsive design.
 - No JavaScript involved.
 
-* Actual support depends on the browser of choice. Learn more at:
-  http://diveintohtml5.info/video.html#what-works
+[1] Actual support depends on the browser of choice. Learn more at:
+    http://diveintohtml5.info/video.html#what-works
