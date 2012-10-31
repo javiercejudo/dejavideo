@@ -24,24 +24,61 @@ function get_extension ($file) {
 	return $info['extension'];
 }
 
+function contains_supported_mime_types ($dir) {
+	if ($GLOBALS['found']) return true;
+	if ($handle = opendir($dir)) {
+		$files = array();
+		$no_dirs = $dirs = array();
+		while (false !== ($filename = readdir($handle))) {
+			if (!is_dir($dir . "/" . $filename))	$no_dirs[] = $filename;
+			else $dirs[] = $filename;
+		}
+		$files = array_merge($no_dirs, $dirs);
+		closedir($handle);
+	}
+	foreach ($files as $filename) {
+		if ($filename != "." && $filename != ".." && substr($filename, 0, 1) != ".") {
+			$path_to_file = $dir . "/" . $filename;
+			if (!is_dir($path_to_file)) {
+				if (accepted_mime_type(get_mime_type($path_to_file))) {
+					$GLOBALS['found'] = 1;
+					return true;
+				}
+			} else {
+				contains_supported_mime_types($path_to_file);
+			}
+		}
+	}
+	return $GLOBALS['found'];
+}
+
 function list_files ($files, $dir, $video, $list_directory, $level) {
 	echo "<ul class='level-$level'>";
 	foreach ($files as $filename) {
-		if ($filename != "." && $filename != "..") {
-			echo "<li>";
+		if ($filename != "." && $filename != ".." && substr($filename, 0, 1) != ".") {
 			$new_dir = $dir . "/" . $filename;
 			if (!is_dir($new_dir)) {
 				if (accepted_mime_type(get_mime_type($new_dir))) {
 					$is_current = ($new_dir === $video) ? ' current' : '';
+					echo "<li>";
 					echo "<p><a class='file$is_current' href='?v=" . rawurlencode($new_dir) . "'>" . $filename . "</a></p>";
+					echo "</li>";
 				} else {
-					echo "<p class='file unsupported'>" . $filename . " [" . get_mime_type($new_dir) . " unsupported]</p>";
+					if (!ONLY_ACCEPTED_FILES) {
+						echo "<li>";
+						echo "<p class='file unsupported'>" . $filename . " [" . get_mime_type($new_dir) . " unsupported]</p>";
+						echo "</li>";
+					}
 				}
 			} else {
-				echo "<p><span  class='dir'>" . $filename . "</span></p>";
-				$list_directory($new_dir, $video, $level + 1);
+				$GLOBALS['found'] = 0;
+				if (!ONLY_FOLDERS_WITH_ACCEPTED_FILES || contains_supported_mime_types($new_dir)) {
+					echo "<li>";
+					echo "<p><span  class='dir'>" . $filename . "</span></p>";
+					$list_directory($new_dir, $video, $level + 1);
+					echo "</li>";
+				}
 			}
-			echo "</li>";
 		}
 	}
 	echo "</ul>";
@@ -49,15 +86,19 @@ function list_files ($files, $dir, $video, $list_directory, $level) {
 
 function list_directory ($dir, $video, $level) {
 	if ($handle = opendir($dir)) {
+		$no_dirs = $dirs = array();
 		while (false !== ($filename = readdir($handle))) {
-			$files[] = $filename;
+			if (!is_dir($dir . "/" . $filename))	$no_dirs[] = $filename;
+			else $dirs[] = $filename;
 		}
-		sort($files);
+		sort($no_dirs);
+		sort($dirs);
+		$files = array_merge($no_dirs, $dirs);
 		list_files($files, $dir, $video, __FUNCTION__, $level);
 		closedir($handle);
 	} else return false;
 
-	/* Alternative implementation (PHP5 only) */
+	/* Alternative basic implementation (PHP5 only) */
 	// if ($files = scandir($dir)) {
 	// 	list_files($files, $dir, $video, __FUNCTION__, $level);
 	// } else return false;

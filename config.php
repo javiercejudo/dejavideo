@@ -8,3 +8,6 @@ $ARRAY_MIME_TYPES_CODECS = array (
 	'video/ogg'       => 'theora, vorbis',
 	'application/ogg' => 'theora, vorbis'
 );
+
+define('ONLY_FOLDERS_WITH_ACCEPTED_FILES', true);
+define('ONLY_ACCEPTED_FILES', false);
