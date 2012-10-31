@@ -13,7 +13,8 @@ in the house connected to the Wi-Fi, including tablets and smartphones.
 ## How to use:
 
 Copy the application on a folder on your web root and put your videos 
-inside the `data/` folder, organised in subfolders or however you prefer.
+inside the `data/` folder (alternatively, you can create a symlink to any
+folder on your system), organised in subfolders or however you prefer.
 Access the app by a local URL like `192.168.?.?/dejavideo`.
 
 ## Main features:
