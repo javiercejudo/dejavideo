@@ -19,10 +19,10 @@ if(isset($_GET['v']) && !empty($_GET['v'])) {
 		if (HIDE_LIST_WHEN_VIDEO_SELECTED) {
 			$list = false;
 		}
-	} elseif(is_dir($_GET['v']) && substr($_GET['v'], 0, 1) != '.' && substr($_GET['v'], 0, 1) != '/' && !preg_match('/[\\/]\.{2}/', $_GET['v'])) {
+	} elseif(is_safe_dir($_GET['v'])) {
 		$dir = $_GET['v'];
 	}
 }
-if(isset($_GET['d']) && !empty($_GET['d']) && is_dir($_GET['d']) && substr($_GET['d'], 0, 1) != '.' && !preg_match('/[\\/]\.{2}/', $_GET['d'])) {
+if(isset($_GET['d']) && !empty($_GET['d']) && is_safe_dir($_GET['d'])) {
 	$dir = $_GET['d'];
 }

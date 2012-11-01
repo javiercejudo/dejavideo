@@ -28,6 +28,13 @@ function accepted_mime_type ($mime_type) {
 	return array_key_exists($mime_type, $GLOBALS["ARRAY_MIME_TYPES_CODECS"]);
 }
 
+function is_safe_dir ($dir) {
+	return is_dir($dir) && 
+	       substr($dir, 0, 1) != '.' && 
+	       substr($dir, 0, 1) != '/' && 
+	       !preg_match('/[\\/]\.{2}/', $dir);
+}
+
 function contains_supported_mime_types ($dir) {
 	if ($GLOBALS['found']) return true;
 	if ($handle = opendir($dir)) {
