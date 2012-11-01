@@ -1,21 +1,8 @@
 <?php 
-
 header('Content-Type: text/html; charset=utf-8');
-
 require 'config.php';
 require 'functions.php';
-
-$video   = ''; // consider defaulting to toturial video
-$n_video = 'none';
-$v_type  = '';
-$v_codec = '';
-if(isset($_GET['v']) && is_file($_GET['v'])) {
-	$video   = $_GET['v'];
-	$n_video = $video;
-	$v_type  = get_mime_type($video);
-	$v_codec = get_codec($v_type);
-}
-
+require 'initialize.php';
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -25,22 +12,16 @@ if(isset($_GET['v']) && is_file($_GET['v'])) {
 	<link rel="stylesheet" type="text/css" href="css/styles.css">
 </head>
 <body>
-	<div class="player">
-		<video width="720" height="445" controls="controls" autoplay="autoplay" poster="img/dejavideo.png">
-			<source src="<?= $video ?>" type='<?= $v_type ?>;  codecs="<?= $v_codec ?>"'>
-			Your browser does not support the video tag.
-		</video>
-		<p>
-			Current video: 
-			<?php 
-			echo "<span class='current' title='" . $n_video . "'>" . basename($n_video) . "</span>";
-			if ($video) {
-				echo " <a href='$video'>[download]</a>";
-				echo " <a href='.'>[close]</a>";
-			}
-			?>
-		</p>
+	<div class="display_container">
+		<?php include 'display.php'	?>
 	</div>
-<?php list_directory(DATA, $video, 1) ?>
+<?php 
+if ($list) {
+	echo "<div id='listingOFF'>";
+	list_directory($dir, $video, 1);
+	echo "</div>";
+}?>
+<script src="vendor/jquery-1.8.2.min.js" type="text/javascript"></script>
+<script src="js/main.js" type="text/javascript"></script>
 </body>
 </html>

@@ -1,5 +1,14 @@
 <?php
 
+function get_extension ($file) {
+	$info = pathinfo($file);
+	return $info['extension'];
+}
+
+function get_parent_folder ($path) {
+	return substr($path, 0, strrpos($path, '/'));
+}
+
 function get_codec ($mime_type) {
 	$codecs = $GLOBALS["ARRAY_MIME_TYPES_CODECS"];
 	return $codecs[$mime_type];
@@ -17,11 +26,6 @@ function get_mime_type ($file) {
 
 function accepted_mime_type ($mime_type) {
 	return array_key_exists($mime_type, $GLOBALS["ARRAY_MIME_TYPES_CODECS"]);
-}
-
-function get_extension ($file) {
-	$info = pathinfo($file);
-	return $info['extension'];
 }
 
 function contains_supported_mime_types ($dir) {
@@ -53,6 +57,7 @@ function contains_supported_mime_types ($dir) {
 }
 
 function list_files ($files, $dir, $video, $list_directory, $level) {
+	if (DEPTH > -1 && $level > DEPTH) return 0;
 	echo "<ul class='level-$level'>";
 	foreach ($files as $filename) {
 		if ($filename != "." && $filename != ".." && substr($filename, 0, 1) != ".") {
@@ -61,7 +66,7 @@ function list_files ($files, $dir, $video, $list_directory, $level) {
 				if (accepted_mime_type(get_mime_type($new_dir))) {
 					$is_current = ($new_dir === $video) ? ' current' : '';
 					echo "<li>";
-					echo "<p><a class='file$is_current' href='?v=" . rawurlencode($new_dir) . "'>" . $filename . "</a></p>";
+					echo "<p><a class='file$is_current' href='?v=" . rawurlencode($new_dir) . "&amp;d=" . rawurlencode($GLOBALS['dir']) . "'>" . $filename . "</a></p>";
 					echo "</li>";
 				} else {
 					if (!ONLY_ACCEPTED_FILES) {
@@ -74,7 +79,7 @@ function list_files ($files, $dir, $video, $list_directory, $level) {
 				$GLOBALS['found'] = 0;
 				if (!ONLY_FOLDERS_WITH_ACCEPTED_FILES || contains_supported_mime_types($new_dir)) {
 					echo "<li>";
-					echo "<p><span  class='dir'>" . $filename . "</span></p>";
+					echo "<p><a class='dir' href='?v=" . rawurlencode($new_dir) . "#listing'>" . $filename . "</span></p>";
 					$list_directory($new_dir, $video, $level + 1);
 					echo "</li>";
 				}
@@ -91,8 +96,8 @@ function list_directory ($dir, $video, $level) {
 			if (!is_dir($dir . "/" . $filename))	$no_dirs[] = $filename;
 			else $dirs[] = $filename;
 		}
-		sort($no_dirs);
-		sort($dirs);
+		usort($no_dirs, 'strcasecmp');
+		usort($dirs, 'strcasecmp');
 		$files = array_merge($no_dirs, $dirs);
 		list_files($files, $dir, $video, __FUNCTION__, $level);
 		closedir($handle);
