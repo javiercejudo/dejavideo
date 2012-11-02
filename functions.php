@@ -86,7 +86,7 @@ function list_files ($files, $dir, $video, $list_directory, $level) {
 				$GLOBALS['found'] = 0;
 				if (!ONLY_FOLDERS_WITH_ACCEPTED_FILES || contains_supported_mime_types($new_dir)) {
 					echo "<li>";
-					echo "<p><a class='dir' href='?v=" . rawurlencode($new_dir) . "#listing'>" . $filename . "</span></p>";
+					echo "<p><a class='dir' href='?v=" . rawurlencode($new_dir) . "#listing'>" . $filename . "</a></p>";
 					$list_directory($new_dir, $video, $level + 1);
 					echo "</li>";
 				}
