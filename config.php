@@ -11,6 +11,6 @@ $ARRAY_MIME_TYPES_CODECS = array (
 
 define('DEPTH', -1); // set DEPTH to (-1) for infinite depth
 
-define('HIDE_LIST_WHEN_VIDEO_SELECTED', false);
+define('HIDE_LIST_WHEN_VIDEO_SELECTED', true);
 define('ONLY_FOLDERS_WITH_ACCEPTED_FILES', true);
 define('ONLY_ACCEPTED_FILES', true);
