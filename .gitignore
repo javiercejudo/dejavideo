@@ -1,8 +1,10 @@
 .*
 !.gitignore
 *~
-data/*
+data
+data/
 data3/*
+data_sample/*
 # OS generated files #
 ######################
 .DS_Store
