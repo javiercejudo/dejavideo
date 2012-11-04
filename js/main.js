@@ -1,23 +1,21 @@
 $(document).ready(function(){
 	if($('.display_novideo').length) {
 		if (location.hash !== '#listing') {
-			var delaytime = 200;
+			var delaytime = 500;
 		} else {
 			var delaytime = 0;
-			// $('.display_container').css({
-			// 	marginTop: "-=450px"
-			// });
 		}
 		$('.display_novideo').delay(delaytime).animate({
-			height: "-=450px"
-		}, 600);
+			height: "-=575px"
+		}, 500);
+		$('.title_initial').remove();
 		$('.title').delay(delaytime).animate({
-			opacity: "0",
-			left: "+=750",
-			width: "-=750",
-			top: "-=450px"
-		}, 800, function(){
-			$(this).css('display', 'none');
+			// opacity: "0",
+			// left: "+=750",
+			// width: "-=750",
+			margin: "0"
+		}, 500, function(){
+			//$(this).css('display', 'none');
 		});
 	}
 });
