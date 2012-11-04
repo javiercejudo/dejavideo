@@ -17,6 +17,12 @@ in the house connected to the Wi-Fi, including tablets and smartphones.
 \* Actual support depends on the browser of choice. Learn more at:
     http://diveintohtml5.info/video.html#what-works
 
+## Main features:
+
+- Indefinitely recursive listings.
+- Responsive design with beautiful columns.
+- Fully functional without JavaScript.
+
 ## How to install:
 
 Copy the application on a folder on your web root and put your videos 
@@ -24,8 +30,4 @@ inside the `data/` folder (alternatively, you can create a symlink to any
 folder on your system), organised in subfolders or however you prefer.
 Access the app by a local URL like `192.168.?.?/dejavideo`.
 
-## Main features:
-
-- Indefinitely recursive listings.
-- Responsive design with beautiful columns.
-- No JavaScript involved.
+##
