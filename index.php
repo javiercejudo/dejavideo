@@ -17,11 +17,11 @@ require 'initialize.php';
 	</div>
 <?php 
 if ($list) {
-	echo "<div id='listingOFF'>";
+	echo "<div id='listingOFF' class='listing_container'>";
 	list_directory($dir, $video, 1);
 	echo "</div>";
 }?>
-<script src="vendor/jquery-1.8.2.min.js" type="text/javascript"></script>
-<script src="js/main.js" type="text/javascript"></script>
+<script src="vendor/jquery-1.8.2.min.js"></script>
+<script src="js/main.js"></script>
 </body>
 </html>
