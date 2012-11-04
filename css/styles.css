@@ -5,6 +5,10 @@ body {
 	margin: 0; padding: 0;
 	word-wrap: break-word;
 	overflow-y: scroll;
+	-webkit-transition: all 250ms;
+	   -moz-transition: all 250ms;
+         -o-transition: all 250ms;
+            transition: all 250ms;
 }
 
 a {
@@ -27,10 +31,12 @@ video {
 .title {
 	position: absolute;
 	width: 100%;
-	text-align: center;
-	margin-top: 200px;
+	margin-top: 100px;
 	font-size: 3.2em;
-	word-wrap: initial; 
+	word-wrap: initial;
+	white-space: nowrap;
+  	overflow-x: hidden;
+  	text-overflow: ellipsis;
 }
 
 .display_container {
@@ -39,8 +45,8 @@ video {
 
 .display {
 	display: inline-block;
-	width: 854px;
-	height: 510px;
+	width: 854px; /* same as YouTube's large player */
+	height: 640px; /* before ->580 | 640 makes it 4:3 */
     padding:0; margin:0;
 }
 
@@ -49,6 +55,10 @@ video {
     background-image: /*url("../img/dejavideo.png"),*/ url("../img/curtain3.png"), url("../img/curtain2.png"), url("../img/curtain1.png");
     background-position: center;
     background-repeat: /*no-repeat*/, repeat-x, repeat-x, repeat-x;
+}
+
+.listing_container {
+	/* leave this here */
 }
 
 .level-1 {
@@ -103,7 +113,7 @@ video {
 	border-bottom: 1px dotted #ccc;
 }
 
-@media all and (max-width: 1200px) {
+@media all and (max-width: 1024px) {
 	.level-2 {
 		-webkit-column-count: 2;
 		   -moz-column-count: 2;
@@ -111,14 +121,13 @@ video {
 	}
 }
 
-@media all and (max-width: 854px) {
+@media all and (max-width: 854px) { /* width of the large player */
 	.display {
 		width: 100%;
-		min-width: auto;
 	}
 }
 
-@media all and (max-width: 700px) {
+@media all and (max-width: 768px) {
 	.level-2 {
 		-webkit-column-count: 1;
 		   -moz-column-count: 1;
@@ -128,3 +137,42 @@ video {
 		padding-left: 5px;
 	}
 }
+
+/* Desktop and Tablets (landscape) ----------- */
+@media all and (min-device-width: 768px) and (max-device-width: 1200px) and (orientation: landscape) {
+	.level-2 {
+		-webkit-column-count: 3;
+		   -moz-column-count: 3;
+		        column-count: 3;
+	}
+
+	ul, li {
+		padding-left: 5px;
+	}
+}
+
+/* Tablets only (portrait) ----------- */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1200px) and (orientation: portrait) {
+	.current_container, .listing_container {
+		font-size: 1.3em;
+	}
+
+	.display {
+		width: 100%;
+		height: 768px;
+	}
+
+	.display_novideo {
+		height: 640px;
+	}
+
+	.level-2 {
+		-webkit-column-count: 2;
+		   -moz-column-count: 2;
+		        column-count: 2;
+	}
+	ul, li {
+		padding-left: 5px;
+	}
+}
+
