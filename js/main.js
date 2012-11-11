@@ -8,14 +8,12 @@ $(document).ready(function(){
 		$('.display_novideo').delay(delaytime).animate({
 			height: "-=575px"
 		}, 500);
-		$('.title_initial').remove();
 		$('.title').delay(delaytime).animate({
-			// opacity: "0",
-			// left: "+=750",
-			// width: "-=750",
 			margin: "0"
-		}, 500, function(){
-			//$(this).css('display', 'none');
-		});
+		}, 500);
 	}
+	var main_video = $('#main_video')[0];
+	$('.current').click(function(e) {
+		main_video.currentTime -= 5;
+	});
 });

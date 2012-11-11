@@ -9,7 +9,8 @@ require 'initialize.php';
 <head>
 	<meta charset="utf-8" />
 	<title>DejaVideo by Javier Cejudo</title>
-	<link rel="stylesheet" type="text/css" href="css/styles.css">
+	<?php if (VIDEOJS && $video) echo '<link href="http://vjs.zencdn.net/c/video-js.css" rel="stylesheet">'; ?>
+	<link href="css/styles.css" rel="stylesheet">
 </head>
 <body>
 	<div class="display_container">
@@ -20,8 +21,10 @@ if ($list) {
 	echo "<div id='listingOFF' class='listing_container'>";
 	list_directory($dir, $video, 1);
 	echo "</div>";
-}?>
+}
+?>
 <script src="vendor/jquery-1.8.2.min.js"></script>
 <script src="js/main.js"></script>
+<?php if (VIDEOJS && $video) echo '<script src="http://vjs.zencdn.net/c/video.js"></script>'; ?>
 </body>
 </html>

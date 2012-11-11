@@ -45,16 +45,21 @@ video {
 
 .display {
 	display: inline-block;
-	width: 854px; /* same as YouTube's large player */
-	height: 640px; /* before ->580 | 640 makes it 4:3 */
     padding:0; margin:0;
+}
+
+.display_video {
+	/* !important needed to overrun videojs defaults  */
+	width: 854px !important; /* same as YouTube's large player */
+	height: 640px !important; /* before ->580 | 640 makes it 4:3 */
 }
 
 .display_novideo {
 	width: 100%;
-    background-image: /*url("../img/dejavideo.png"),*/ url("../img/curtain3.png"), url("../img/curtain2.png"), url("../img/curtain1.png");
+	height: 640px;
+    background-image: url("../img/curtain3.png"), url("../img/curtain2.png"), url("../img/curtain1.png");
     background-position: center;
-    background-repeat: /*no-repeat*/, repeat-x, repeat-x, repeat-x;
+    background-repeat: repeat-x, repeat-x, repeat-x;
 }
 
 .listing_container {
@@ -122,8 +127,8 @@ video {
 }
 
 @media all and (max-width: 854px) { /* width of the large player */
-	.display {
-		width: 100%;
+	.display_video {
+		width: 100% !important;
 	}
 }
 
@@ -134,7 +139,8 @@ video {
 		        column-count: 1;
 	}
 	ul, li {
-		padding-left: 5px;
+		margin-left: 5px;
+		padding-left: 0;
 	}
 }
 
@@ -147,7 +153,8 @@ video {
 	}
 
 	ul, li {
-		padding-left: 5px;
+		margin-left: 5px;
+		padding-left: 0;
 	}
 }
 
@@ -157,8 +164,8 @@ video {
 		font-size: 1.3em;
 	}
 
-	.display {
-		width: 100%;
+	.display_video {
+		width: 100% !important;
 		height: 768px;
 	}
 

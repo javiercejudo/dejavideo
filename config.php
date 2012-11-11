@@ -1,5 +1,6 @@
 <?php
 
+define('TOP_TITLE', "<!--<a href='.#listing'>DejaVideo</a> by <a href='https://twitter.com/javiercejudo'>@javiercejudo</a>-->");
 define('DATA', 'data'); // folder data/ in this directory
 
 $ARRAY_MIME_TYPES_CODECS = array (
@@ -9,8 +10,11 @@ $ARRAY_MIME_TYPES_CODECS = array (
 	'application/ogg' => 'theora, vorbis'
 );
 
-define('DEPTH', -1); // set DEPTH to (-1) for infinite depth
+define('DEPTH', 2); // set DEPTH to (-1) for infinite depth
 
 define('HIDE_LIST_WHEN_VIDEO_SELECTED', true);
 define('ONLY_FOLDERS_WITH_ACCEPTED_FILES', true);
 define('ONLY_ACCEPTED_FILES', true);
+define('DISPLAY_NAMES', true);
+
+define('VIDEOJS', false);

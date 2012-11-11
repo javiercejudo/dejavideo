@@ -35,6 +35,22 @@ function is_safe_dir ($dir) {
 	       !preg_match('/[\\/]\.{2}/', $dir);
 }
 
+// This function helps pirates only. Don't look at it! ;)
+function get_display_name($filename) {
+	if (!DISPLAY_NAMES) return $filename;
+	// Covers S01E01 form
+	$pattern = '/.*[Ss]([0-9]{2})[Ee]([0-9]{2}).*/i';
+	$replacement = 'Season $1, episode $2';
+	$display_name = preg_replace($pattern, $replacement, $filename);
+	if (strcmp($filename, $display_name) !== 0)	return $display_name;
+	// Covers 10x01 form
+	$pattern = '/[^0-9]+([0-9]{1,2})x([0-9]{2}).*/i';
+	$replacement = 'Season $1, episode $2';
+	$display_name = preg_replace($pattern, $replacement, $filename);
+	if (strcmp($filename, $display_name) !== 0)	return $display_name;
+	return $filename;
+}
+
 function contains_supported_mime_types ($dir) {
 	if ($GLOBALS['found']) return true;
 	if ($handle = opendir($dir)) {
@@ -73,7 +89,9 @@ function list_files ($files, $dir, $video, $list_directory, $level) {
 				if (accepted_mime_type(get_mime_type($new_dir))) {
 					$is_current = ($new_dir === $video) ? ' current' : '';
 					echo "<li>";
-					echo "<p><a class='file$is_current' href='?v=" . rawurlencode($new_dir) . "&amp;d=" . rawurlencode($GLOBALS['dir']) . "'>" . $filename . "</a></p>";
+					echo "<p><a class='file$is_current' href='?v=" . rawurlencode($new_dir) . "&amp;d=" . rawurlencode($GLOBALS['dir']) . "' title='" . $filename . "'>";
+					echo get_display_name($filename);
+					echo "</a></p>";
 					echo "</li>";
 				} else {
 					if (!ONLY_ACCEPTED_FILES) {
