@@ -35,6 +35,22 @@ function is_safe_dir ($dir) {
 	       !preg_match('/[\\/]\.{2}/', $dir);
 }
 
+function display_current_location ($dir) {
+	$path_trail = '';
+	$current_location = '';
+	$tokens = array_filter(explode('/', $dir));
+	foreach ($tokens as $token) {
+		$path_trail .= $token;
+		$dir_active = ($token !== end($tokens)) ? '' : ' dir_active';
+		$current_location .= "<a class='dir$dir_active' href='?v=" . rawurlencode($path_trail) . "#listing'>" . $token . "</a>";
+		if ($token !== end($tokens)) {
+			$current_location .= ' ' . SCREEN_DIRECTORY_SEPARATOR . ' ';
+			$path_trail .= '/';
+		}
+	}
+	return $current_location;
+}
+
 // This function helps pirates only. Don't look at it! ;)
 function get_display_name($filename) {
 	if (!DISPLAY_NAMES) return $filename;

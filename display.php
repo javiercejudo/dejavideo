@@ -8,17 +8,17 @@ if ($video) {
 	echo "Current video: ";
 	echo "<span class='current' title='" . $n_video . "'>" . basename($n_video) . "</span>";
 	echo " <a href='$video'>[download]</a>";
-	echo " <a href='?v=" . $dir . "#listing'><strong>[close]</strong></a>";
+	echo " <a href='?v=" . rawurlencode($dir) . "#listing'><strong>[close]</strong></a>";
 	echo "</p>";
 } else {
 	echo "<h1 class='title'>" . TOP_TITLE . "</h1>";
 	echo "<div class='display display_novideo'></div>";
 	echo "<p class='current_container'>";
 	echo "Current location: ";
-	echo "<span class='dir' title='" . $dir . "'>" . $dir . "</span>";
-	if ($dir !== DATA ) {
-		echo " <a href='?v=" . get_parent_folder($dir) . "#listing'>[up]</a>";
-		echo " <a href='.#listing'><strong>[home]</strong></a>";
-	}
+	echo display_current_location($dir);
+	// if ($dir !== DATA ) {
+	// 	echo " <a href='?v=" . get_parent_folder($dir) . "#listing'>[up]</a>";
+	// 	echo " <a href='.#listing'><strong>[home]</strong></a>";
+	// }
 	echo "</p>";
 }
