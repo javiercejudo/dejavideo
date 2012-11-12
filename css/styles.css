@@ -105,6 +105,10 @@ video {
 	line-height: 2.5em;
 }
 
+.dir_active {
+	background-color: #000;
+}
+
 .file {
 	font-style: italic;
 }
@@ -160,10 +164,6 @@ video {
 
 /* Tablets only (portrait) ----------- */
 @media only screen and (min-device-width: 768px) and (max-device-width: 1200px) and (orientation: portrait) {
-	.current_container, .listing_container {
-		font-size: 1.3em;
-	}
-
 	.display_video {
 		width: 100% !important;
 		height: 768px;

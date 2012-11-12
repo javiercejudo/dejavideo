@@ -8,6 +8,7 @@ require 'initialize.php';
 <html>
 <head>
 	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>DejaVideo by Javier Cejudo</title>
 	<?php if (VIDEOJS && $video) echo '<link href="http://vjs.zencdn.net/c/video-js.css" rel="stylesheet">'; ?>
 	<link href="css/styles.css" rel="stylesheet">
