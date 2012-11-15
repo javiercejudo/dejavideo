@@ -20,7 +20,7 @@ define('DISPLAY_NAMES', true);                    // default: true
 $ARRAY_DISPLAY_NAMES = array (
 	'/(.*)s([0-9]{2})e([0-9]{2}).*/i'       => '$1 S$2 E$3', // Covers S01E01 form
 	'/([^0-9]+)([0-9]{1,2})x([0-9]{2}).*/i' => '$1 S$2 E$3', // Covers 10x01 form
-	'/([^\(\[]*)[\(\[]?([1-2][0-9]{3}).*/'       => '$1 ($2)'     // Covers movies with year
+	'/([^\(\[]*)[\(\[]?([1-2][0-9]{3}).*/'  => '$1 ($2)'     // Covers movies with year
 );
 
 define('VIDEOJS', true); // default: false

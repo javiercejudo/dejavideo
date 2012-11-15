@@ -67,7 +67,6 @@ $(document).ready(function(){
 			} else {
 				main_video.pause();
 			}
-			checkIfPaused(main_video);
 			clear_videojs_spinner();
 		});
 

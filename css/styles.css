@@ -51,7 +51,7 @@ video {
 .display_video {
 	/* !important needed to overrun videojs defaults  */
 	width: 854px !important; /* same as YouTube's large player */
-	height: 481px !important; /* 481 makes it 16:9, 640 makes it 4:3 */
+	height: 480px !important; /* 480 makes it ~ 16:9, 640 makes it ~ 4:3 */
 }
 
 .display_novideo {

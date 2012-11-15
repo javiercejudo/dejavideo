@@ -35,6 +35,20 @@ function is_safe_dir ($dir) {
 	       !preg_match('/[\\/]\.{2}/', $dir);
 }
 
+function get_subtitles ($video) {
+	$info = pathinfo($video);
+	$subtitles = $info['dirname'] . DIRECTORY_SEPARATOR . 'subs' .  DIRECTORY_SEPARATOR . $info['filename'] . '.vtt';
+	if (is_file($subtitles)) {
+		return $subtitles;
+	} else {
+		$subtitles = $info['dirname'] . DIRECTORY_SEPARATOR . $info['filename'] . '.vtt';
+		if (is_file($subtitles)) {
+			return $subtitles;
+		}
+	}
+	return false;
+}
+
 function display_current_location ($dir) {
 	$path_trail = '';
 	$current_location = '';
