@@ -42,7 +42,7 @@ function display_current_location ($dir) {
 	foreach ($tokens as $token) {
 		$path_trail .= $token;
 		$dir_active = ($token !== end($tokens)) ? '' : ' dir_active';
-		$current_location .= "<a class='dir$dir_active' href='?v=" . rawurlencode($path_trail) . "#listing'>" . $token . "</a>";
+		$current_location .= "<a class='dir$dir_active' href='?v=" . rawurlencode($path_trail) . "#listing'>" . get_display_name($token) . "</a>";
 		if ($token !== end($tokens)) {
 			$current_location .= ' ' . SCREEN_DIRECTORY_SEPARATOR . ' ';
 			$path_trail .= '/';
@@ -54,16 +54,14 @@ function display_current_location ($dir) {
 // This function helps pirates only. Don't look at it! ;)
 function get_display_name($filename) {
 	if (!DISPLAY_NAMES) return $filename;
-	// Covers S01E01 form
-	$pattern = '/.*[Ss]([0-9]{2})[Ee]([0-9]{2}).*/i';
-	$replacement = 'Season $1, episode $2';
-	$display_name = preg_replace($pattern, $replacement, $filename);
-	if (strcmp($filename, $display_name) !== 0)	return $display_name;
-	// Covers 10x01 form
-	$pattern = '/[^0-9]+([0-9]{1,2})x([0-9]{2}).*/i';
-	$replacement = 'Season $1, episode $2';
-	$display_name = preg_replace($pattern, $replacement, $filename);
-	if (strcmp($filename, $display_name) !== 0)	return $display_name;
+	foreach ($GLOBALS["ARRAY_DISPLAY_NAMES"] as $pattern => $replacement) {
+		$display_name = preg_replace($pattern, $replacement, $filename);
+		if (strcmp($filename, $display_name) !== 0)	{
+			$display_name = str_replace(".", " ", $display_name);
+			$display_name = str_replace("_", " ", $display_name);
+			return $display_name;
+		}
+	}
 	return $filename;
 }
 
@@ -112,7 +110,7 @@ function list_files ($files, $dir, $video, $list_directory, $level) {
 				} else {
 					if (!ONLY_ACCEPTED_FILES) {
 						echo "<li>";
-						echo "<p class='file unsupported'>" . $filename . " [" . get_mime_type($new_dir) . " unsupported]</p>";
+						echo "<p class='file unsupported' title='" . $filename . "'>" . get_display_name($filename) . " [" . get_mime_type($new_dir) . " unsupported]</p>";
 						echo "</li>";
 					}
 				}
@@ -120,7 +118,7 @@ function list_files ($files, $dir, $video, $list_directory, $level) {
 				$GLOBALS['found'] = 0;
 				if (!ONLY_FOLDERS_WITH_ACCEPTED_FILES || contains_supported_mime_types($new_dir)) {
 					echo "<li>";
-					echo "<p><a class='dir' href='?v=" . rawurlencode($new_dir) . "#listing'>" . $filename . "</a></p>";
+					echo "<p><a class='dir' href='?v=" . rawurlencode($new_dir) . "#listing'>" . get_display_name($filename) . "</a></p>";
 					$list_directory($new_dir, $video, $level + 1);
 					echo "</li>";
 				}

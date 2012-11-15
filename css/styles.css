@@ -44,14 +44,14 @@ video {
 }
 
 .display {
-	display: inline-block;
-    padding:0; margin:0;
+    margin:0 auto;
+    padding:0;
 }
 
 .display_video {
 	/* !important needed to overrun videojs defaults  */
 	width: 854px !important; /* same as YouTube's large player */
-	height: 640px !important; /* before ->580 | 640 makes it 4:3 */
+	height: 481px !important; /* 481 makes it 16:9, 640 makes it 4:3 */
 }
 
 .display_novideo {
@@ -122,6 +122,12 @@ video {
 	border-bottom: 1px dotted #ccc;
 }
 
+.ctrl_pp {
+	display: inline-block;
+	width: 10%;
+	min-width: 120px
+}
+
 @media all and (max-width: 1024px) {
 	.level-2 {
 		-webkit-column-count: 2;
@@ -142,6 +148,7 @@ video {
 		   -moz-column-count: 1;
 		        column-count: 1;
 	}
+	
 	ul, li {
 		margin-left: 5px;
 		padding-left: 0;
@@ -178,8 +185,10 @@ video {
 		   -moz-column-count: 2;
 		        column-count: 2;
 	}
+
 	ul, li {
-		padding-left: 5px;
+		margin-left: 5px;
+		padding-left: 0;
 	}
 }
 
