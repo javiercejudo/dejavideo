@@ -96,12 +96,14 @@ $(document).ready(function(){
 				}
 				controls_fade_out_timeout = setTimeout(function(){
 					$('.vjs-controls').removeClass('vjs-fade-in').addClass('vjs-fade-out');
-				}, 2000);
+				}, 1000);
 			}
 		});
 
 		main_video_prop.on('dblclick', function(){
 			if ($('.video-js').length) {
+				// main_video.currentTime -= .1;
+				// clear_videojs_spinner();
 				var player = _V_("main_video");
 				if (!player.isFullScreen) {
 					player.requestFullScreen();
@@ -120,9 +122,12 @@ $(document).ready(function(){
 			},
 			pause: function(){
 				checkIfPaused(main_video);
-				if ($('.vjs-controls').length) {
-					$('.vjs-controls').removeClass('vjs-fade-out').addClass('vjs-fade-in');
-				}
+				// if ($('.vjs-controls').length) {
+				// 	if(controls_fade_out_timeout !== undefined) {
+				// 		clearTimeout(controls_fade_out_timeout);
+				// 	}
+				// 	$('.vjs-controls').removeClass('vjs-fade-out').addClass('vjs-fade-in');
+				// }
 			}
 		});
 	}
