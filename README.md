@@ -16,6 +16,8 @@ in the house connected to the Wi-Fi, including tablets and smartphones.
 video except the extension, and must be placed either in the same
 directory or in a subfolder `subs/`).
 - Custom controls.
+- Intuitive additions to Video.js: full screen on double click, autohide for
+control bar…
 - Fully functional without JavaScript.
 - Responsive design with beautiful columns.
 
