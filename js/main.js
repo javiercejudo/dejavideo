@@ -95,7 +95,6 @@ $(document).ready(function(){
 					$('.vjs-controls').removeClass('vjs-fade-out').addClass('vjs-fade-in');
 				}
 				controls_fade_out_timeout = setTimeout(function(){
-					console.log('I\'m here');
 					$('.vjs-controls').removeClass('vjs-fade-in').addClass('vjs-fade-out');
 				}, 2000);
 			}
