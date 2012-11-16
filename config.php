@@ -23,4 +23,4 @@ $ARRAY_DISPLAY_NAMES = array (
 	'/([^\(\[]*)[\(\[]?([1-2][0-9]{3}).*/'  => '$1 ($2)'     // Covers movies with year
 );
 
-define('VIDEOJS', true); // default: false
+define('VIDEOJS', true); // default: true

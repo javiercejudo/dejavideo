@@ -63,7 +63,8 @@ video {
 }
 
 .listing_container {
-	/* leave this here */
+	max-width: 1280px;
+	margin: 0 auto;
 }
 
 .level-1 {

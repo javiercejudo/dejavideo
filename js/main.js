@@ -46,17 +46,17 @@ $(document).ready(function(){
 	main_video = get_main_video(main_video_prop);
 
 	if (main_video !== undefined) {
-		$('.ctrl_lll').click(function(e) {
+		$('.ctrl_lll').on('click', function(e) {
 			main_video.currentTime -= 60;
 			clear_videojs_spinner();
 		});
 
-		$('.ctrl_ll').click(function(e) {
+		$('.ctrl_ll').on('click', function(e) {
 			main_video.currentTime -= 10;
 			clear_videojs_spinner();
 		});
 
-		$('.ctrl_l').click(function(e) {
+		$('.ctrl_l').on('click', function(e) {
 			main_video.currentTime -= 3;
 			clear_videojs_spinner();
 		});
@@ -70,27 +70,60 @@ $(document).ready(function(){
 			clear_videojs_spinner();
 		});
 
-		$('.ctrl_r').click(function(e) {
+		$('.ctrl_r').on('click', function(e) {
 			main_video.currentTime += 3;
 			clear_videojs_spinner();
 		});
 
-		$('.ctrl_rr').click(function(e) {
+		$('.ctrl_rr').on('click', function(e) {
 			main_video.currentTime += 10;
 			clear_videojs_spinner();
 		});
 
-		$('.ctrl_rrr').click(function(e) {
+		$('.ctrl_rrr').on('click', function(e) {
 			main_video.currentTime += 60;
 			clear_videojs_spinner();
+		});
+
+		var controls_fade_out_timeout;
+		main_video_prop.on('mousemove', function(){
+			if(controls_fade_out_timeout !== undefined) {
+				clearTimeout(controls_fade_out_timeout);
+			}
+			if ($('.vjs-controls').length) {
+				if (!$('.vjs-controls').hasClass('vjs-fade-in')) {
+					$('.vjs-controls').removeClass('vjs-fade-out').addClass('vjs-fade-in');
+				}
+				controls_fade_out_timeout = setTimeout(function(){
+					console.log('I\'m here');
+					$('.vjs-controls').removeClass('vjs-fade-in').addClass('vjs-fade-out');
+				}, 2000);
+			}
+		});
+
+		main_video_prop.on('dblclick', function(){
+			if ($('.video-js').length) {
+				var player = _V_("main_video");
+				if (!player.isFullScreen) {
+					player.requestFullScreen();
+				} else {
+					player.cancelFullScreen();
+				}
+			}
 		});
 
 		main_video_prop.on({
 			play: function(){
 				checkIfPaused(main_video);
+				if ($('.vjs-controls').length) {
+					$('.vjs-controls').removeClass('vjs-fade-in').addClass('vjs-fade-out');
+				}
 			},
 			pause: function(){
 				checkIfPaused(main_video);
+				if ($('.vjs-controls').length) {
+					$('.vjs-controls').removeClass('vjs-fade-out').addClass('vjs-fade-in');
+				}
 			}
 		});
 	}
