@@ -1,11 +1,11 @@
 # DejaVideo
 
+Requires PHP 5.4.0.
+
 Check the demo page at [http://javiercejudo.kodingen.com/labs/dejavideo/](http://javiercejudo.kodingen.com/labs/dejavideo/).
 
 Stream your own videos easily, either on your private network or to the 
-world using HTML5 video.
-
-I use the app to share all my videos from my main device to any devices
+world using HTML5 video. I use the app to share all my videos from my main device to any devices
 in the house connected to the Wi-Fi, including tablets and smartphones.
 
 ## Features:
@@ -36,5 +36,3 @@ Copy the application on a folder on your web root and put your videos
 inside the `data/` folder (alternatively, you can create a symlink to any
 folder on your system), organised in subfolders or however you prefer.
 Access the app by a local URL like `192.168.?.?/dejavideo`.
-
-Requires PHP 5.2.0.
