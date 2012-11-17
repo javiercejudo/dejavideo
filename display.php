@@ -8,7 +8,7 @@ if ($video) {
 	}
 	echo "Your browser does not support the video tag.";
 	echo "</video>";
-	echo "<p class='custom_controls'>";
+	echo "<p class='custom_controls' style='display:none;'>";
 	echo " <a href='javascript:;' class='ctrl dir ctrl_lll'>-1min</a>";
 	echo " <a href='javascript:;' class='ctrl dir ctrl_ll'>-10s</a>";
 	echo " <a href='javascript:;' class='ctrl dir ctrl_l'>-3s</a>";
