@@ -79,18 +79,19 @@ function get_display_name($filename) {
 	return $filename;
 }
 
+function scandir_grouped ($dir, $sorting_order = SCANDIR_SORT_ASCENDING) {
+	$files = scandir($dir, $sorting_order);
+	$no_dirs = $dirs = array();
+    foreach($files as $filename) {
+		if (!is_dir($dir . "/" . $filename)) $no_dirs[] = $filename;
+		else $dirs[] = $filename;
+    }
+    return array_merge($no_dirs, $dirs);
+}
+
 function contains_supported_mime_types ($dir) {
 	if ($GLOBALS['found']) return true;
-	if ($handle = opendir($dir)) {
-		$files = array();
-		$no_dirs = $dirs = array();
-		while (false !== ($filename = readdir($handle))) {
-			if (!is_dir($dir . "/" . $filename))	$no_dirs[] = $filename;
-			else $dirs[] = $filename;
-		}
-		$files = array_merge($no_dirs, $dirs);
-		closedir($handle);
-	}
+	$files = scandir_grouped($dir, SCANDIR_SORT_NONE);
 	foreach ($files as $filename) {
 		if ($filename != "." && $filename != ".." && substr($filename, 0, 1) != ".") {
 			$path_to_file = $dir . "/" . $filename;
@@ -143,21 +144,7 @@ function list_files ($files, $dir, $video, $list_directory, $level) {
 }
 
 function list_directory ($dir, $video, $level) {
-	if ($handle = opendir($dir)) {
-		$no_dirs = $dirs = array();
-		while (false !== ($filename = readdir($handle))) {
-			if (!is_dir($dir . "/" . $filename))	$no_dirs[] = $filename;
-			else $dirs[] = $filename;
-		}
-		usort($no_dirs, 'strcasecmp');
-		usort($dirs, 'strcasecmp');
-		$files = array_merge($no_dirs, $dirs);
+	if ($files = scandir_grouped($dir, SCANDIR_SORT_ASCENDING)) {
 		list_files($files, $dir, $video, __FUNCTION__, $level);
-		closedir($handle);
 	} else return false;
-
-	/* Alternative basic implementation (PHP5 only) */
-	// if ($files = scandir($dir)) {
-	// 	list_files($files, $dir, $video, __FUNCTION__, $level);
-	// } else return false;
 }
