@@ -31,7 +31,9 @@ $(document).ready(function(){
 	}
 
 	function get_main_video (main_video_prop) {
-		return main_video_prop[0];
+		if (main_video_prop !== undefined) {
+			return main_video_prop[0];
+		}
 	}
 
 	function clear_videojs_spinner() {
@@ -50,11 +52,35 @@ $(document).ready(function(){
 		}
 	}
 
+	function clear_fade_out_timeout(controls_fade_out_timeout) {
+		if(controls_fade_out_timeout !== undefined) {
+			clearTimeout(controls_fade_out_timeout);
+		}
+	}
+
+	function fadeIn_then_fadeOut() {
+		if (!$('.vjs-controls').hasClass('vjs-fade-in')) {
+			$('.vjs-controls').removeClass('vjs-fade-out').addClass('vjs-fade-in');
+		}
+		return setTimeout(function(){
+			$('.vjs-controls').removeClass('vjs-fade-in').addClass('vjs-fade-out');
+		}, 1000);
+	}
+
 	main_video_prop = get_main_video_prop();
 	main_video = get_main_video(main_video_prop);
 
 	if (main_video !== undefined) {
 		$(".custom_controls").show();
+		if (Modernizr.touch) {
+			$(".ctrl_vol").hide();
+		}
+		var offset = 0;
+		if (location.hash !== ''){
+			offset = parseFloat(location.hash.substr(1));
+		}
+		main_video.volume = .8;
+		var controls_fade_out_timeout;
 
 		$('.ctrl_lll').on('click', function(e) {
 			main_video.currentTime -= 60;
@@ -71,13 +97,24 @@ $(document).ready(function(){
 			clear_videojs_spinner();
 		});
 
+		$('.vol_d').on('click', function(e) {
+			clear_fade_out_timeout(controls_fade_out_timeout);
+			if(main_video.volume - .1 > 0) main_video.volume -= .1;
+			else main_video.volume = 0;
+			controls_fade_out_timeout = fadeIn_then_fadeOut();
+		});
+
 		$('.ctrl_pp').on('click', function(e) {
-			if (main_video.paused) {
-				main_video.play();
-			} else {
-				main_video.pause();
-			}
+			if (main_video.paused) main_video.play();
+			else main_video.pause();
 			clear_videojs_spinner();
+		});
+
+		$('.vol_i').on('click', function(e) {
+			clear_fade_out_timeout(controls_fade_out_timeout);
+			if(main_video.volume + .1 < 1) main_video.volume += .1;
+			else main_video.volume = 1;
+			controls_fade_out_timeout = fadeIn_then_fadeOut();
 		});
 
 		$('.ctrl_r').on('click', function(e) {
@@ -95,25 +132,13 @@ $(document).ready(function(){
 			clear_videojs_spinner();
 		});
 
-		var controls_fade_out_timeout;
 		main_video_prop.on('mousemove', function(){
-			if(controls_fade_out_timeout !== undefined) {
-				clearTimeout(controls_fade_out_timeout);
-			}
-			if ($('.vjs-controls').length) {
-				if (!$('.vjs-controls').hasClass('vjs-fade-in')) {
-					$('.vjs-controls').removeClass('vjs-fade-out').addClass('vjs-fade-in');
-				}
-				controls_fade_out_timeout = setTimeout(function(){
-					$('.vjs-controls').removeClass('vjs-fade-in').addClass('vjs-fade-out');
-				}, 1000);
-			}
+			clear_fade_out_timeout(controls_fade_out_timeout);
+			controls_fade_out_timeout = fadeIn_then_fadeOut();
 		});
 
 		$('.vjs-controls').on('mousemove', function(){
-			if(controls_fade_out_timeout !== undefined) {
-				clearTimeout(controls_fade_out_timeout);
-			}
+			clear_fade_out_timeout(controls_fade_out_timeout);
 		});
 
 		main_video_prop.on('dblclick', function(){
@@ -138,13 +163,28 @@ $(document).ready(function(){
 			},
 			pause: function(){
 				checkIfPaused(main_video);
-				// if ($('.vjs-controls').length) {
-				// 	if(controls_fade_out_timeout !== undefined) {
-				// 		clearTimeout(controls_fade_out_timeout);
-				// 	}
-				// 	$('.vjs-controls').removeClass('vjs-fade-out').addClass('vjs-fade-in');
-				// }
+				if ($('.vjs-controls').length) {
+					clear_fade_out_timeout(controls_fade_out_timeout);
+					$('.vjs-controls').removeClass('vjs-fade-out').addClass('vjs-fade-in');
+				}
+			},
+			seeking: function(){
+				location.hash = Math.floor(main_video.currentTime);
+			},
+			loadedmetadata: function(){
+				if (offset > 0){
+					setTimeout(function(){
+						fadeIn_then_fadeOut();
+						main_video.currentTime = offset;
+						clear_videojs_spinner();
+					}, 1000);
+				}
 			}
 		});
+
+		setInterval(function(){
+			location.hash = Math.floor(main_video.currentTime);
+			checkIfPaused(main_video);
+		}, 5000);
 	}
 });

@@ -12,7 +12,9 @@ if ($video) {
 	echo " <a href='javascript:;' class='ctrl dir ctrl_lll'>-1min</a>";
 	echo " <a href='javascript:;' class='ctrl dir ctrl_ll'>-10s</a>";
 	echo " <a href='javascript:;' class='ctrl dir ctrl_l'>-3s</a>";
+	echo " <a href='javascript:;' class='ctrl dir ctrl_vol vol_d'>-vol</a>";
 	echo " <a href='javascript:;' class='ctrl dir ctrl_pp'>loading…</a>";
+	echo " <a href='javascript:;' class='ctrl dir ctrl_vol vol_i'>+vol</a>";
 	echo " <a href='javascript:;' class='ctrl dir ctrl_r'>+3s</a>";
 	echo " <a href='javascript:;' class='ctrl dir ctrl_rr'>+10s</a>";
 	echo " <a href='javascript:;' class='ctrl dir ctrl_rrr'>+1min</a>";

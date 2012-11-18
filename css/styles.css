@@ -177,10 +177,6 @@ video {
 		height: 768px;
 	}
 
-	.display_novideo {
-		height: 640px;
-	}
-
 	.level-2 {
 		-webkit-column-count: 2;
 		   -moz-column-count: 2;

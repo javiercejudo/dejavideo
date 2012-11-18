@@ -18,9 +18,11 @@ define('ONLY_ACCEPTED_FILES', true);              // default: true
 define('DISPLAY_NAMES', true);                    // default: true
 
 $ARRAY_DISPLAY_NAMES = array (
-	'/(.*)s([0-9]{2})e([0-9]{2}).*/i'       => '$1 S$2 E$3', // Covers S01E01 form
+	// pattern => replacement
+	'/(.*)s([0-9]{2})e([0-9]{2}).*/i' => '$1 S$2 E$3', // Covers S01E01 form
 	'/([^0-9]+)([0-9]{1,2})x([0-9]{2}).*/i' => '$1 S$2 E$3', // Covers 10x01 form
-	'/([^\(\[]*)[\(\[]?([1-2][0-9]{3}).*/'  => '$1 ($2)'     // Covers movies with year
+	'/([^\(\[]*)[\(\[]?(18[789][0-9]{1}|19[0-9]{2}|20[0-3][0-9]{1}).*/'  => '$1 ($2)', // Covers movies with year
+	'/_/' => ' ' // Underscores --> spaces
 );
 
 define('VIDEOJS', true); // default: true
