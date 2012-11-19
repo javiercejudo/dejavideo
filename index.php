@@ -25,8 +25,9 @@ if ($list) {
 }
 ?>
 <script src="vendor/js/jquery-1.8.2.min.js"></script>
-<script src="vendor/js/modernizr.custom-2.6.2.min.js"></script>
 <?php if (VIDEOJS && $video) echo '<script src="vendor/js/video-3.2.0.min.js"></script>'; ?>
+<script src="vendor/js/hammer-0.6.3.js"></script>
+<script src="vendor/js/jquery.hammer-0.3.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>

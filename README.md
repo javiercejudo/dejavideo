@@ -5,8 +5,9 @@ Requires PHP 5.4.0.
 Check the demo page at [javiercejudo.kodingen.com/labs/dejavideo/](http://javiercejudo.kodingen.com/labs/dejavideo/).
 
 Stream your own videos easily, either on your private network or to the 
-world using HTML5 video. I use the app to share all my videos from my main device to any devices
-in the house connected to the Wi-Fi, including tablets and smartphones.
+world using HTML5 video. I use the app to share all my videos from my main 
+device to any devicesin the house connected to the Wi-Fi, including tablets 
+and smartphones.
 
 ## Features:
 
@@ -16,8 +17,9 @@ in the house connected to the Wi-Fi, including tablets and smartphones.
 video except the extension, and must be placed either in the same
 directory or in a subfolder `subs/`).
 - Added controls for video playback. <sup>*</sup>
-- Intuitive additions to Video.js: full screen on double click, autohide for
-control bar… <sup>*</sup>
+- Intuitive additions to Video.js: full screen on double click (or pinch on touch 
+screens thanks to [Hammer.js](http://eightmedia.github.com/hammer.js/)), 
+autohide for control bar… <sup>*</sup>
 - Custom start time by adding a number of seconds after the hash (ie. `url#60`
 would make the video start at minute 1). The URL gets periodical 
 updates so you can keep the link and start where you left off. <sup>*</sup>

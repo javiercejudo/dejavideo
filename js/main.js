@@ -52,6 +52,21 @@ $(document).ready(function(){
 		}
 	}
 
+	function toogle_fullscreen (main_video, time_correction) {
+		if ($('.video-js').length) {
+			if (time_correction > 0) {
+				main_video.currentTime -= time_correction;
+			}
+			clear_videojs_spinner();
+			var player = _V_("main_video");
+			if (!player.isFullScreen) {
+				player.requestFullScreen();
+			} else {
+				player.cancelFullScreen();
+			}
+		}
+	}
+
 	function clear_fade_out_timeout(controls_fade_out_timeout) {
 		if(controls_fade_out_timeout !== undefined) {
 			clearTimeout(controls_fade_out_timeout);
@@ -72,14 +87,20 @@ $(document).ready(function(){
 
 	if (main_video !== undefined) {
 		$(".custom_controls").show();
-		if (Modernizr.touch) {
-			$(".ctrl_vol").hide();
+		main_video.volume = 0; // will help us check if vol can be modified
+		if (main_video.volume === 0) {
+			main_video.volume = 1; // default vol
+		} else {
+			$(".ctrl_vol").hide(); // if vol cannot be modified, hide vol controls
+			if($('.vjs-control').length) {
+				$(".vjs-volume-control, .vjs-mute-control").hide();
+			}
 		}
 		var offset = 0;
 		if (location.hash !== ''){
 			offset = parseFloat(location.hash.substr(1));
 		}
-		main_video.volume = .8;
+		main_video.volume = 1;
 		var controls_fade_out_timeout;
 
 		$('.ctrl_lll').on('click', function(e) {
@@ -132,26 +153,8 @@ $(document).ready(function(){
 			clear_videojs_spinner();
 		});
 
-		main_video_prop.on('mousemove', function(){
-			clear_fade_out_timeout(controls_fade_out_timeout);
-			controls_fade_out_timeout = fadeIn_then_fadeOut();
-		});
-
 		$('.vjs-controls').on('mousemove', function(){
 			clear_fade_out_timeout(controls_fade_out_timeout);
-		});
-
-		main_video_prop.on('dblclick', function(){
-			if ($('.video-js').length) {
-				main_video.currentTime -= .1;
-				clear_videojs_spinner();
-				var player = _V_("main_video");
-				if (!player.isFullScreen) {
-					player.requestFullScreen();
-				} else {
-					player.cancelFullScreen();
-				}
-			}
 		});
 
 		main_video_prop.on({
@@ -163,6 +166,7 @@ $(document).ready(function(){
 			},
 			pause: function(){
 				checkIfPaused(main_video);
+				location.hash = Math.floor(main_video.currentTime);
 				if ($('.vjs-controls').length) {
 					clear_fade_out_timeout(controls_fade_out_timeout);
 					$('.vjs-controls').removeClass('vjs-fade-out').addClass('vjs-fade-in');
@@ -179,12 +183,29 @@ $(document).ready(function(){
 						clear_videojs_spinner();
 					}, 1000);
 				}
+			},
+			mousemove: function(){
+				clear_fade_out_timeout(controls_fade_out_timeout);
+				controls_fade_out_timeout = fadeIn_then_fadeOut();
+			},
+			dblclick: function(){
+				toogle_fullscreen(main_video, .1);
 			}
 		});
 
 		setInterval(function(){
 			location.hash = Math.floor(main_video.currentTime);
 			checkIfPaused(main_video);
-		}, 5000);
+		}, 10000);
+
+		var hammer = new Hammer(main_video);
+		hammer.ontransform = function(ev) {
+			toogle_fullscreen(main_video, 0);
+		};
+
+		hammer.ontap = function(ev) {
+			clear_fade_out_timeout(controls_fade_out_timeout);
+			controls_fade_out_timeout = fadeIn_then_fadeOut();
+		};
 	}
 });
