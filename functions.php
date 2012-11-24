@@ -5,10 +5,6 @@ function get_extension ($file) {
 	return $info['extension'];
 }
 
-function get_parent_folder ($path) {
-	return substr($path, 0, strrpos($path, '/'));
-}
-
 function get_codec ($mime_type) {
 	$codecs = $GLOBALS["ARRAY_MIME_TYPES_CODECS"];
 	return $codecs[$mime_type];
@@ -52,14 +48,14 @@ function get_subtitles ($video) {
 function display_current_location ($dir) {
 	$path_trail = '';
 	$current_location = '';
-	$tokens = array_filter(explode('/', $dir));
+	$tokens = array_filter(explode(DS, $dir));
 	foreach ($tokens as $token) {
 		$path_trail .= $token;
 		$dir_active = ($token !== end($tokens)) ? '' : ' dir_active';
-		$current_location .= "<a class='dir$dir_active' href='?v=" . rawurlencode($path_trail) . "#listing'>" . get_display_name($token) . "</a>";
+		$current_location .= "<a class='dir$dir_active' href='?v=" . rawurlencode($path_trail) . "'>" . get_display_name($token) . "</a>";
 		if ($token !== end($tokens)) {
-			$current_location .= ' ' . SCREEN_DIRECTORY_SEPARATOR . ' ';
-			$path_trail .= '/';
+			$current_location .= ' ' . SDS . ' ';
+			$path_trail .= DS;
 		}
 	}
 	return $current_location;
@@ -71,9 +67,7 @@ function get_display_name($filename) {
 	foreach ($GLOBALS["ARRAY_DISPLAY_NAMES"] as $pattern => $replacement) {
 		$display_name = preg_replace($pattern, $replacement, $filename);
 		if (strcmp($filename, $display_name) !== 0)	{
-			$display_name = str_replace(".", " ", $display_name);
-			$display_name = str_replace("_", " ", $display_name);
-			return $display_name;
+			return preg_replace('/[\.\-_]/', ' ', $display_name);
 		}
 	}
 	return $filename;
@@ -133,7 +127,7 @@ function list_files ($files, $dir, $video, $list_directory, $level) {
 				$GLOBALS['found'] = 0;
 				if (!ONLY_FOLDERS_WITH_ACCEPTED_FILES || contains_supported_mime_types($new_dir)) {
 					echo "<li>";
-					echo "<p><a class='dir' href='?v=" . rawurlencode($new_dir) . "#listing'>" . get_display_name($filename) . "</a></p>";
+					echo "<p><a class='dir' href='?v=" . rawurlencode($new_dir) . "'>" . get_display_name($filename) . "</a></p>";
 					$list_directory($new_dir, $video, $level + 1);
 					echo "</li>";
 				}
