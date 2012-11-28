@@ -25,6 +25,8 @@ would make the video start at minute 1). The URL gets periodical
 updates so you can keep the link and start where you left off. <sup>*</sup>
 - Convenient renaming of filenames via regular expressions (pattern - replacement).
 - Fully functional without JavaScript.
+- Folder contents count and file details (size and modification date).
+- Recent files bar that scrolls horizontally by dragging it.
 - Indefinitely recursive listings.
 
 \* This feature requires JavaScript.

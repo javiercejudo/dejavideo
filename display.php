@@ -1,7 +1,11 @@
 <?php 
 if ($video) {	
 	$video_js = VIDEOJS ? ' video-js vjs-default-skin' : '';
-	echo "<video id='main_video' class='display display_video$video_js' controls autoplay='autoplay' poster='img/dejavideo.png' data-setup='{}'>";
+	echo "<video id='main_video' class='display display_video$video_js' controls autoplay='autoplay'";
+	if ($poster = get_poster($video)) {
+		echo " poster='" . $poster . "' ";
+	}
+	echo "data-setup='{}'>";
 	echo "<source src='" . $video . "' type='" . $v_type . ";" . $v_codec . "'>";
 	if ($subs = get_subtitles($video)) {
 		echo "<track kind='subtitles' src='" . $subs . "' srclang='en' label='English' />";

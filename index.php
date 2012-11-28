@@ -20,7 +20,8 @@ require 'initialize.php';
 	</div>
 <?php 
 if ($list) {
-	echo "<div id='listingOFF' class='listing_container'>";
+	echo "<input id='current_dir' type='hidden' value='" . $dir . "'>";
+	echo "<div id='listing' class='listing_container'>";
 	list_directory($dir, $video, 1);
 	echo "</div>";
 }
