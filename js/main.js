@@ -53,15 +53,8 @@ $(document).ready(function(){
 				var total_width_b = document.getElementById('top_recent').scrollWidth;
 				var total_width = Math.min(total_width_a, total_width_b);
 				hammer.ondrag = function(ev) {
-					// console.log(ev);
-					// console.log("list width:" + $('#top_recent').width());
 					console.log("list tot width:" + total_width);
-					// console.log("margin left:" + parseInt($('#top_recent').css('marginLeft').slice(0,-2), 10));
-					// console.log("doc width:" + $(document).width());
-					// console.log('---');
 					if (parseInt(current_marginLeft.slice(0,-2), 10) + ev.distanceX < 0) {
-						// if (total_width + parseInt($('#top_recent').css('marginLeft').slice(0,-2), 10) >= $(document).width()
-						// if ($(document).width() - total_width < parseInt($('#top_recent').css('marginLeft').slice(0,-2), 10)
 						if (total_width > -parseInt($('#top_recent').css('marginLeft').slice(0,-2), 10)+100
 							|| ev.direction == 'right') {
 							$('#top_recent')
@@ -319,4 +312,10 @@ $(document).ready(function(){
 			}
 		});
 	// }
+
+	$('.current_container').on('mouseup', function (ev){
+		if ($(this).has(ev.target).length === 0){
+			$("html, body").animate({ scrollTop: "0" });
+		}
+	});
 });

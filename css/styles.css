@@ -190,6 +190,7 @@ video {
 	margin: 0 auto;
 	position: relative;
 	padding: .5em 1em;
+	cursor: move;
 }
 
 .item_recent {
