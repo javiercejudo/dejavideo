@@ -4,6 +4,10 @@ function get_extension ($path) {
 	$info = pathinfo($path);
 	return $info['extension'];
 }
+function get_dirname ($path) {
+	$info = pathinfo($path);
+	return $info['dirname'];
+}
 function get_filename ($path) {
 	$info = pathinfo($path);
 	return $info['basename'];
@@ -22,7 +26,7 @@ function format_bytes($a_bytes) {
 }
 
 function format_date ($unix_timestamp) {
-	return date('Y-m-d', $unix_timestamp);
+	return date('M j, Y h:i A', $unix_timestamp);
 }
 
 function time_ago($tm, $rcs = 1, $c_level = 1) {
@@ -64,6 +68,14 @@ function is_safe_dir ($dir) {
 	return is_dir($dir) && 
 	       substr($dir, 0, 1) != '.' && 
 	       substr($dir, 0, 1) != '/' && 
+	       !preg_match('/[\\/]\./', $dir) &&
+	       !preg_match('/[\\/]\.{2}/', $dir);
+}
+
+function is_safe_dir_ajax ($dir) {
+	return is_dir($dir) && 
+	       substr($dir, 0, 1) != '.' &&
+	       !preg_match('/[\\/]\./', $dir) &&
 	       !preg_match('/[\\/]\.{2}/', $dir);
 }
 
@@ -117,7 +129,7 @@ function add_recent_file ($pathname, $file_md, $max_date, $recent_files, $amount
 	return false;
 }
 
-function get_recent_files ($path = DATA, $amount = 3) {
+function get_recent_files ($path = DATA, $amount = 3, $safe = true) {
 	$dir = new DirectoryIterator($path);
 	$recent_files = array();
 	$max_date = 0;
@@ -134,8 +146,9 @@ function get_recent_files ($path = DATA, $amount = 3) {
 				$max_date = end($recent_files);
 			}
 		}
-		if(is_dir($pathname) && !$file->isDot()) {
-			$rec_recent_files = get_recent_files($pathname, $amount);
+		$is_dir_fn = $safe ? 'is_safe_dir' : 'is_safe_dir_ajax';
+		if($is_dir_fn($pathname) && !$file->isDot()) {
+			$rec_recent_files = get_recent_files($pathname, $amount, $safe);
 			foreach ($rec_recent_files as $pathname => $file_md) {
 				if ($aux = add_recent_file($pathname, $file_md, $max_date, $recent_files, $amount)) {
 					$recent_files = $aux;
@@ -228,11 +241,12 @@ function contains_supported_mime_types ($dir) {
 function list_files ($files, $dir, $video, $list_directory, $level) {
 	if (DEPTH > -1 && $level > DEPTH) return 0;
 	if ($level === 1) {
-		echo '<div id="top_recent_wrapper" class="tr_placeholder">';
+		echo '<div id="top_recent_wrapper" class="tr_placeholder" style="display: none;">';
 		echo '<ol id="top_recent" class="top_recent" id="tr_placeholder"><li class="item_recent" id="recent_tag">Recent:</li><li class="item_recent" id="loading_tag">Loading…</li></ol>';
 		echo '</div>';
 		echo '<script>';
 		echo 'document.getElementById("listing").style.display = "none";';
+		echo 'document.getElementById("top_recent_wrapper").style.display = "block";';
 		echo '</script>';
 	}
 	echo "<ul class='level-$level'>";
@@ -248,8 +262,8 @@ function list_files ($files, $dir, $video, $list_directory, $level) {
 					echo get_display_name($filename);
 					echo "</a>";
 					if (DISPLAY_FILE_DETAILS && time() - filemtime($new_dir) > 5) {
-						echo "<br><span class='file_details'>" . format_bytes(filesize($new_dir));
-						echo " - " . time_ago(filemtime($new_dir), AGO_NUMBER_OF_UNITS) . "</span>";
+						echo "<br /><span class='file_details'>" . format_bytes(filesize($new_dir));
+						echo " - <span title='" . format_date(filemtime($new_dir)) . "'>" . time_ago(filemtime($new_dir), AGO_NUMBER_OF_UNITS) . "</span></span>";
 					}
 					echo "</p>";
 					echo "</li>";

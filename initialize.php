@@ -9,7 +9,7 @@ $dir     = DATA;
 $list    = true;
 
 if(isset($_GET['v']) && !empty($_GET['v'])) {
-	if(is_file($_GET['v'])) {
+	if(is_safe_dir(get_dirname($_GET['v'])) && is_file($_GET['v'])) {
 		$video   = $_GET['v'];
 		$n_video = $video;
 		$v_type  = get_mime_type($video);

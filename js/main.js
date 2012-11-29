@@ -39,7 +39,11 @@ $(document).ready(function(){
 				$('#recent_tag').after(result);
 			}, 250);
 			setTimeout(function(){
-				 $("#top_recent a").on("dragstart", function() {
+				$("#top_recent").on("selectstart", function(e) {
+					e.preventDefault();
+					return false;
+				});
+				$("#top_recent a").on("dragstart", function() {
 			        return false;
 			    });
 				var hammer = new Hammer(document.getElementById("top_recent"), {

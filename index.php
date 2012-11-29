@@ -9,7 +9,9 @@ require 'initialize.php';
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>DejaVideo by Javier Cejudo</title>
+	<title>
+		<?php if($video) echo get_display_name(get_filename($video)) ." -" ?> DejaVideo by Javier Cejudo
+	</title>
 	<link href="vendor/css/normalize-2.0.1.css" rel="stylesheet">
 	<?php if (VIDEOJS && $video) echo '<link href="vendor/css/video-3.2.0.min.css" rel="stylesheet">'; ?>
 	<link href="css/styles.css" rel="stylesheet">
