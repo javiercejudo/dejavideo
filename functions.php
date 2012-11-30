@@ -106,13 +106,10 @@ function get_poster ($video) {
 
 function print_recent_files ($recent_files, $dir, $ajax = false) {
 	$print = '';
-	// $print .= "<ol id='top_recent' class='top_recent' style='display: none;'>";
-	// $print .= "<li class='item_recent'>Recent:";
 	foreach ($recent_files as $path_to_file => $file_md) {
 		if($ajax) $path_to_file = substr($path_to_file, strpos($path_to_file, DATA));
 		$print .= "<li class='item_recent'><a href='?v=" . rawurlencode($path_to_file) . "&amp;d=" . $dir . "'>" . get_display_name(get_filename($path_to_file)) . "</a>";
 	}
-	// $print .= "</ol>";
 	return $print;
 }
 
@@ -213,7 +210,7 @@ function scandir_grouped ($dir, $sorting_order = SCANDIR_SORT_ASCENDING) {
 	$files = scandir($dir, $sorting_order);
 	$no_dirs = $dirs = array();
     foreach($files as $filename) {
-		if (!is_dir($dir . "/" . $filename)) $no_dirs[] = $filename;
+		if (!is_dir($dir . DS . $filename)) $no_dirs[] = $filename;
 		else $dirs[] = $filename;
     }
     return array_merge($no_dirs, $dirs);
@@ -224,7 +221,7 @@ function contains_supported_mime_types ($dir) {
 	$files = scandir_grouped($dir, SCANDIR_SORT_NONE);
 	foreach ($files as $filename) {
 		if ($filename != "." && $filename != ".." && substr($filename, 0, 1) != ".") {
-			$path_to_file = $dir . "/" . $filename;
+			$path_to_file = $dir . DS . $filename;
 			if (!is_dir($path_to_file)) {
 				if (accepted_mime_type(get_mime_type($path_to_file))) {
 					$GLOBALS['found'] = 1;
@@ -252,7 +249,7 @@ function list_files ($files, $dir, $video, $list_directory, $level) {
 	echo "<ul class='level-$level'>";
 	foreach ($files as $filename) {
 		if ($filename != "." && $filename != ".." && substr($filename, 0, 1) != ".") {
-			$new_dir = $dir . "/" . $filename;
+			$new_dir = $dir . DS . $filename;
 			if (!is_dir($new_dir)) {
 				if (accepted_mime_type(get_mime_type($new_dir)) && time() - filemtime($new_dir) > 5) {
 					$is_current = ($new_dir === $video) ? ' current' : '';

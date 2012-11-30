@@ -7,7 +7,7 @@ define('DATA', 'data');                        // default: 'data'
 define('POSTERS', 'data/posters');             // default: 'data/posters'
 define('DEFAULT_POSTER', 'img/dejavideo.png'); // default: 'img/dejavideo.png'
 define('DS', DIRECTORY_SEPARATOR);             // default: DIRECTORY_SEPARATOR
-define('SDS', DS);                             // default: DS
+define('SDS', '/');                            // default: DS
 define('DEPTH', 3);                            // default: 3; set DEPTH to (-1) for infinite depth
 define('DISPLAY_FILE_COUNT', true);            // default: true
 define('DISPLAY_FILE_DETAILS', true);          // default: true
@@ -31,6 +31,7 @@ $ARRAY_DISPLAY_NAMES = array (
 	'/(.*)s([0-9]{2})e([0-9]{2}).*/i' => '$1 S$2 E$3',                                 // Covers S01E01
 	'/([^0-9]+)([0-9]{1,2})x([0-9]{2}).*/i' => '$1 S$2 E$3',                           // Covers 10x01
 	'/([^\(\[]*)[\(\[]?(18[789][0-9]{1}|19[0-9]{2}|20[0-3][0-9]{1}).*/'  => '$1 ($2)', // Covers movies with year
+	'/(^[0-9]{2})(.*)/' => '$2',                                     // Covers DATA folder, the root
 	'/' . preg_quote(DATA, '/') . '/' => 'Videos',                                     // Covers DATA folder, the root
 	'/[_\.-]/' => ' '                                                                  // spaces everywhere!
 );
