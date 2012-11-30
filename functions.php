@@ -254,14 +254,14 @@ function list_files ($files, $dir, $video, $list_directory, $level) {
 		if ($filename != "." && $filename != ".." && substr($filename, 0, 1) != ".") {
 			$new_dir = $dir . "/" . $filename;
 			if (!is_dir($new_dir)) {
-				if (accepted_mime_type(get_mime_type($new_dir))) {
+				if (accepted_mime_type(get_mime_type($new_dir)) && time() - filemtime($new_dir) > 5) {
 					$is_current = ($new_dir === $video) ? ' current' : '';
 					echo "<li>";
 					echo "<p class='file'>";
 					echo "<a class='$is_current' href='?v=" . rawurlencode($new_dir) . "&amp;d=" . rawurlencode($GLOBALS['dir']) . "' title='" . $filename . "'>";
 					echo get_display_name($filename);
 					echo "</a>";
-					if (DISPLAY_FILE_DETAILS && time() - filemtime($new_dir) > 5) {
+					if (DISPLAY_FILE_DETAILS) {
 						echo "<br /><span class='file_details'>" . format_bytes(filesize($new_dir));
 						echo " - <span title='" . format_date(filemtime($new_dir)) . "'>" . time_ago(filemtime($new_dir), AGO_NUMBER_OF_UNITS) . "</span></span>";
 					}
