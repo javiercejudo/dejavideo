@@ -10,16 +10,7 @@ require 'initialize.php';
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>
-		<?php 
-		if($video) {
-			echo get_display_name(get_filename($video));
-		} else {
-			if ($last_ds = strrpos($dir, '/')) {
-				echo get_display_name(substr($dir, $last_ds+1));
-			} else {
-				echo get_display_name($dir);
-			}
-		} ?> - DejaVideo by Javier Cejudo
+		<?php get_page_title($video, $dir) ?> - DejaVideo by Javier Cejudo
 	</title>
 	<link href="vendor/css/normalize-2.0.1.css" rel="stylesheet">
 	<?php if (VIDEOJS && $video) echo '<link href="vendor/css/video-3.2.0.min.css" rel="stylesheet">'; ?>

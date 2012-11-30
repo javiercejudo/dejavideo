@@ -157,10 +157,14 @@ function get_recent_files ($path = DATA, $amount = 3, $safe = true) {
 	return $recent_files;
 }
 
+function tokenize_current_location ($dir) {
+	return array_filter(explode(DS, $dir));
+}
+
 function display_current_location ($dir) {
 	$path_trail = '';
 	$current_location = '';
-	$tokens = array_filter(explode(DS, $dir));
+	$tokens = tokenize_current_location($dir);
 	foreach ($tokens as $token) {
 		$path_trail .= $token;
 		$dir_active = ($token !== end($tokens)) ? '' : ' dir_active';
@@ -177,15 +181,35 @@ function display_current_location ($dir) {
 	return $current_location;
 }
 
+function get_page_title($video, $dir) {
+	if($video) {
+		echo get_display_name(get_filename($video));
+	} else {
+		if ($last_ds = strrpos($dir, '/')) {
+			// echo get_display_name(substr($dir, $last_ds + 1));
+			$tokens = tokenize_current_location($dir);
+			echo '"';
+			$title = '';
+			foreach ($tokens as $token) {
+				$title .= get_display_name($token) . DS;
+			}
+			echo substr($title, 0, -1);
+			echo '"';
+		} else {
+			echo get_display_name($dir);
+		}
+	}
+}
+
 function get_display_name($filename) {
 	if (!DISPLAY_NAMES) return $filename;
 	foreach ($GLOBALS["ARRAY_DISPLAY_NAMES"] as $pattern => $replacement) {
 		$display_name = preg_replace($pattern, $replacement, $filename);
 		if (strcmp($filename, $display_name) !== 0)	{
-			return preg_replace('/[\.\-_]/', ' ', $display_name);
+			return trim(preg_replace('/[\.\-_]/', ' ', $display_name));
 		}
 	}
-	return $filename;
+	return trim($filename);
 }
 
 function count_files($path, $count_files = false) {
