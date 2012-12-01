@@ -185,13 +185,12 @@ function get_page_title($video, $dir) {
 	if($video) {
 		echo get_display_name(get_filename($video));
 	} else {
-		if ($last_ds = strrpos($dir, '/')) {
-			// echo get_display_name(substr($dir, $last_ds + 1));
+		if ($dir !== DATA) {
 			$tokens = tokenize_current_location($dir);
 			echo '"';
 			$title = '';
 			foreach ($tokens as $token) {
-				$title .= get_display_name($token) . DS;
+				$title .= get_display_name($token) . SDS;
 			}
 			echo substr($title, 0, -1);
 			echo '"';

@@ -14,7 +14,7 @@ require 'initialize.php';
 	</title>
 	<link href="vendor/css/normalize-2.0.1.css" rel="stylesheet">
 	<?php if (VIDEOJS && $video) echo '<link href="vendor/css/video-3.2.0.min.css" rel="stylesheet">'; ?>
-	<link href="css/styles.css" rel="stylesheet">
+	<link href="css/styles.css?v=<?= time() ?>" rel="stylesheet">
 </head>
 <body>
 	<div class="display_container">
@@ -32,6 +32,6 @@ if ($list) {
 <?php if (VIDEOJS && $video) echo '<script src="vendor/js/video-3.2.0.min.js"></script>'; ?>
 <script src="vendor/js/modernizr.custom-2.6.2.min.js"></script>
 <script src="vendor/js/hammer-0.6.3.js"></script>
-<script src="js/main.js"></script>
+<script src="js/main.js?v=<?= time() ?>"></script>
 </body>
 </html>

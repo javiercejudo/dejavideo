@@ -162,6 +162,7 @@ $(document).ready(function(){
 			breadcrumbDistanceTop = $('.novideo').position().top;
 			listingDistanceTop = $('.listing_container').position().top;
 		}
+		vol_step = .05;
 		main_video.volume = 0; // will help us check if vol can be modified
 		if (main_video.volume === 0) {
 			main_video.volume = 1; // default vol
@@ -195,10 +196,21 @@ $(document).ready(function(){
 
 		$('.vol_d').on('click', function(e) {
 			clear_fade_out_timeout(controls_fade_out_timeout);
-			if(main_video.volume - .1 > 0) main_video.volume -= .1;
-			else main_video.volume = 0;
+			if(e.originalEvent.detail >= 5) { // I love this :)
+				main_video.volume = 0;
+			} else {
+				if(main_video.volume - vol_step > 0) main_video.volume -= vol_step;
+				else main_video.volume = 0;
+			}
 			controls_fade_out_timeout = fadeIn_then_fadeOut();
 		});
+		var hammer = new Hammer($('.vol_d')[0]);
+		hammer.onhold = function(ev) {
+			clear_fade_out_timeout(controls_fade_out_timeout);
+			if(!main_video.muted) main_video.muted = true;
+			else main_video.volume = 0;
+			controls_fade_out_timeout = fadeIn_then_fadeOut();
+		};
 
 		$('.ctrl_pp').on('click', function(e) {
 			if (main_video.paused) main_video.play();
@@ -208,10 +220,21 @@ $(document).ready(function(){
 
 		$('.vol_i').on('click', function(e) {
 			clear_fade_out_timeout(controls_fade_out_timeout);
-			if(main_video.volume + .1 < 1) main_video.volume += .1;
-			else main_video.volume = 1;
+			if(e.originalEvent.detail >= 5) { // I love this :)
+				main_video.volume = 1;
+			} else {
+				if(main_video.volume + vol_step < 1) main_video.volume += vol_step;
+				else main_video.volume = 1;
+			}
 			controls_fade_out_timeout = fadeIn_then_fadeOut();
 		});
+		var hammer = new Hammer($('.vol_i')[0]);
+		hammer.onhold = function(ev) {
+			clear_fade_out_timeout(controls_fade_out_timeout);
+			if(main_video.muted) main_video.muted = false;
+			else main_video.volume = 1;
+			controls_fade_out_timeout = fadeIn_then_fadeOut();
+		};
 
 		$('.ctrl_r').on('click', function(e) {
 			main_video.currentTime += 3;
