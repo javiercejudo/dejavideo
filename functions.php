@@ -38,7 +38,7 @@ function time_ago($tm, $rcs = 1, $c_level = 1) {
 
 	$no = floor($no); if($no <> 1) $pds[$v] .='s'; $x=sprintf("%d %s ",$no,$pds[$v]);
 	if((($rcs-1 >= 1)&&($c_level <= $rcs-1) || $rcs == 0)&&($v >= 1)&&(($cur_tm-$_tm) > 0)) $x .= time_ago($_tm, $rcs, $c_level+1);
-	if ($no < 5 && strpos($pds[$v], 'second') !== false)
+	if ($no < 5 && strpos($pds[$v], 'second') !== false && $c_level == 1)
 		return "Downloading…";
 	if ($rcs <= $c_level || $v == 0)
 		return $x . ' ago';
@@ -107,8 +107,9 @@ function get_poster ($video) {
 function print_recent_files ($recent_files, $dir, $ajax = false) {
 	$print = '';
 	foreach ($recent_files as $path_to_file => $file_md) {
+		$original_path_to_file = $path_to_file;
 		if($ajax) $path_to_file = substr($path_to_file, strpos($path_to_file, DATA));
-		$print .= "<li class='item_recent'><a href='?v=" . rawurlencode($path_to_file) . "&amp;d=" . $dir . "'>" . get_display_name(get_filename($path_to_file)) . "</a>";
+		$print .= "<li class='item_recent replaceable'><a href='?v=" . rawurlencode($path_to_file) . "&amp;d=" . $dir . "' title='" . time_ago(filemtime($original_path_to_file), AGO_NUMBER_OF_UNITS) . "'>" . get_display_name(get_filename($path_to_file)) . "</a>";
 	}
 	return $print;
 }

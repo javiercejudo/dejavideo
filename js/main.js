@@ -25,56 +25,68 @@ $(document).ready(function(){
 	// 		}, transitionTime);
 	// 	}
 	// }
-
-	if ($('.novideo').length && $('.listing_container').length) {
-		var breadcrumbDistanceTop = $('.novideo').position().top;
-		var listingDistanceTop = $('.listing_container').position().top;
-		$.ajax({
-			type: "POST",
-			url: "ajax/recent_files.php",
-			data: { path: $('#current_dir').val() }
-		}).done(function( result ) {
-			setTimeout(function(){
-				$('#loading_tag').remove();
-				$('#recent_tag').after(result);
-			}, 250);
-			setTimeout(function(){
-				$("#top_recent").on("selectstart", function(e) {
-					e.preventDefault();
-					return false;
-				});
-				$("#top_recent a").on("dragstart", function() {
-			        return false;
-			    });
-				var hammer = new Hammer(document.getElementById("top_recent"), {
-					'prevent_default' : false,
-					'drag_min_distance' : 0
-				});
-				var current_marginLeft = $('#top_recent').css('marginLeft');
-				$('#top_recent').css('display','inline');
-				var total_width_a = $('#top_recent').outerWidth();
-				$('#top_recent').css('display','block');
-				var total_width_b = document.getElementById('top_recent').scrollWidth;
-				var total_width = Math.min(total_width_a, total_width_b);
-				hammer.ondrag = function(ev) {
-					console.log("list tot width:" + total_width);
-					if (parseInt(current_marginLeft.slice(0,-2), 10) + ev.distanceX < 0) {
-						if (total_width > -parseInt($('#top_recent').css('marginLeft').slice(0,-2), 10)+100
-							|| ev.direction == 'right') {
-							$('#top_recent')
-								.css('marginLeft', current_marginLeft)
-								.css('marginLeft', '+=' + ev.distanceX);
-						}
-					} else {
-						$('#top_recent').css('marginLeft', '0');
+	
+	function update_recent() {
+		if ($('.novideo').length && $('.listing_container').length) {
+			var breadcrumbDistanceTop = $('.novideo').position().top;
+			var listingDistanceTop = $('.listing_container').position().top;
+			$.ajax({
+				type: "POST",
+				url: "ajax/recent_files.php",
+				data: { path: $('#current_dir').val() }
+			}).done(function( result ) {
+				setTimeout(function(){
+					if($('#loading_tag').length) {
+						$('#loading_tag').remove();	
 					}
-				};
-				hammer.ondragend = function(ev) {
-					current_marginLeft = $('#top_recent').css('marginLeft');
-				};
-			}, 275);
-		});
-	}	
+					if($('.replaceable').length) {
+						$('.replaceable').remove();	
+					}
+					$('#recent_tag').after(result);
+				}, 250);
+				setTimeout(function(){
+					$("#top_recent").on("selectstart", function(e) {
+						e.preventDefault();
+						return false;
+					});
+					$("#top_recent a").on("dragstart", function() {
+				        return false;
+				    });
+					var hammer = new Hammer(document.getElementById("top_recent"), {
+						'prevent_default' : false,
+						'drag_min_distance' : 0
+					});
+					var current_marginLeft = $('#top_recent').css('marginLeft');
+					$('#top_recent').css('display','inline');
+					var total_width_a = $('#top_recent').outerWidth();
+					$('#top_recent').css('display','block');
+					var total_width_b = document.getElementById('top_recent').scrollWidth;
+					var total_width = Math.min(total_width_a, total_width_b);
+					hammer.ondrag = function(ev) {
+						if (parseInt(current_marginLeft.slice(0,-2), 10) + ev.distanceX < 0) {
+							if (total_width > -parseInt($('#top_recent').css('marginLeft').slice(0,-2), 10) + 200
+								|| ev.direction == 'right') {
+								$('#top_recent')
+									.css('marginLeft', current_marginLeft)
+									.css('marginLeft', '+=' + ev.distanceX);
+							} else {
+								$('#top_recent')
+									.css('marginLeft', parseInt(-total_width + 200, 10) + 'px');
+							}
+						} else {
+							$('#top_recent').css('marginLeft', '0');
+						}
+					};
+					hammer.ondragend = function(ev) {
+						current_marginLeft = $('#top_recent').css('marginLeft');
+					};
+				}, 275);
+			});
+		}	
+	}
+
+	update_recent();
+	setInterval(update_recent, 10000);
 
 	$(window).on('resize', function(){
 		if ($('.novideo').length && $('.listing_container').length) {
