@@ -12,6 +12,10 @@ a {
 	text-decoration: none;
 }
 
+abbr.timeago {
+	border-bottom-width: 0px;
+}
+
 h1 {
 	font-weight: normal;
 }
@@ -78,7 +82,7 @@ video {
 
 .display_video {
 	/* !important needed to overrun videojs defaults  */
-	width: 854px !important; /* same as YouTube's large player */
+	width: 100% !important; /* 854: same as YouTube's large player */
 	height: 480px !important; /* 480 makes it ~ 16:9, 640 makes it ~ 4:3 */
 }
 
@@ -119,7 +123,7 @@ video {
 }
 
 	.level-2 > li {
-		overflow-y: hidden;
+		overflow: hidden;
 		border: 1px solid #2C2C2C;
 		background-color: #252525;
 		margin-bottom: -1px;
@@ -181,9 +185,8 @@ video {
 
 #top_recent_wrapper {
 	overflow: hidden;
-	background-color: #252525;
-	border-top: 1px solid #2C2C2C;
-	border-bottom: 1px solid #2C2C2C;
+	border-left: none;
+	border-right: none;
 }
 
 .top_recent {
@@ -206,6 +209,42 @@ video {
 .item_recent:last-child {
 	margin-right: 0;
 }
+
+.standard_box {
+	border: 1px solid #2C2C2C;
+	background-color: #252525;
+}
+
+.footer {
+	text-align: center;
+	font-size: small;
+	padding: 1em;
+	margin: 0;
+}
+
+/*********** Dejavideo customization starts ***********/
+
+.vjs-controls {
+	max-width: 854px;
+	margin: 0 auto !important;
+}
+
+.vjs-fade-in {
+	-webkit-transition: visibility 0s linear 0s, opacity .3s linear;
+	   -moz-transition: visibility 0s linear 0s, opacity .3s linear;
+	    -ms-transition: visibility 0s linear 0s, opacity .3s linear;
+	     -o-transition: visibility 0s linear 0s, opacity .3s linear;
+	        transition: visibility 0s linear 0s, opacity .3s linear;
+}
+.vjs-fade-out {
+	-webkit-transition: visibility 0s linear .3s, opacity .3s linear;
+	   -moz-transition: visibility 0s linear .3s, opacity .3s linear;
+	    -ms-transition: visibility 0s linear .3s, opacity .3s linear;
+	     -o-transition: visibility 0s linear .3s, opacity .3s linear;
+	        transition: visibility 0s linear .3s, opacity .3s linear;
+}
+
+/*********** Dejavideo customization ends ***********/
 
 @media only screen and (max-width: 1024px) {
 	.level-2 {

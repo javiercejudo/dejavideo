@@ -1,23 +1,28 @@
 <?php
 
+date_default_timezone_set('Australia/Sydney');
 define('ROOT', dirname(__FILE__));
 
 define('TOP_TITLE', "<!--<a href='.#listing'>DejaVideo</a> by <a href='https://twitter.com/javiercejudo'>@javiercejudo</a>-->");
-define('DATA', 'data');                        // default: 'data'
-define('POSTERS', 'data/posters');             // default: 'data/posters'
-define('DEFAULT_POSTER', 'img/dejavideo.png'); // default: 'img/dejavideo.png'
-define('DS', DIRECTORY_SEPARATOR);             // default: DIRECTORY_SEPARATOR
-define('SDS', '/');                            // default: DS
-define('DEPTH', 3);                            // default: 3; set DEPTH to (-1) for infinite depth
-define('DISPLAY_FILE_COUNT', true);            // default: true
-define('DISPLAY_FILE_DETAILS', true);          // default: true
-define('AGO_NUMBER_OF_UNITS', 2);              // default: 2; e.g. {weeks} {days} ago makes 2 units
+define('DATA', 'data');                                 // default: 'data'
+define('POSTERS', 'data/posters');                      // default: 'data/posters'
+define('DEFAULT_POSTER', 'img/dejavideo.png');          // default: 'img/dejavideo.png'
+define('DS', DIRECTORY_SEPARATOR);                      // default: DIRECTORY_SEPARATOR
+define('SDS', '/');                                     // default: DS
+define('DEPTH', 2);                                     // default: 2; set DEPTH to (-1) for infinite depth
+define('DISPLAY_FILE_COUNT', false);                    // default: true
+define('REAL_FILE_COUNT', DISPLAY_FILE_COUNT && false); // default: false
+define('DISPLAY_FILE_DETAILS', true);                   // default: true
+define('AGO_NUMBER_OF_UNITS', 1);                       // default: 2; e.g. {weeks} {days} ago makes 2 units
 
 $ARRAY_MIME_TYPES_CODECS = array (
 	'video/mp4'       => 'avc1.42E01E, mp4a.40.2',
 	'video/webm'      => 'vp8, vorbis',
 	'video/ogg'       => 'theora, vorbis',
-	'application/ogg' => 'theora, vorbis'
+	'application/ogg' => 'theora, vorbis',
+	// 'video/mpeg'      => '',
+	// 'video/x-msvideo' => '',
+	// 'video/x-matroska'=> ''
 );
 
 define('HIDE_LIST_WHEN_VIDEO_SELECTED', true);    // default: true
@@ -31,8 +36,8 @@ $ARRAY_DISPLAY_NAMES = array (
 	'/(.*)s([0-9]{2})e([0-9]{2}).*/i' => '$1 S$2 E$3',                                 // Covers S01E01
 	'/([^0-9]+)([0-9]{1,2})x([0-9]{2}).*/i' => '$1 S$2 E$3',                           // Covers 10x01
 	'/([^\(\[]*)[\(\[]?(18[789][0-9]{1}|19[0-9]{2}|20[0-3][0-9]{1}).*/'  => '$1 ($2)', // Covers movies with year
-	'/(^[0-9]{2})(.*)/' => '$2',                                     // Covers DATA folder, the root
-	'/' . preg_quote(DATA, '/') . '/' => 'Videos',                                     // Covers DATA folder, the root
+	'/(^[0-9]{2}\.)(.*)/' => '$2',                                                     // Covers 01. Folder name
+	'/' . preg_quote(DATA, '/') . '/' => 'Home',                                     // Covers DATA folder, the root
 	'/[_\.-]/' => ' '                                                                  // spaces everywhere!
 );
 

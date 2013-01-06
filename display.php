@@ -8,7 +8,7 @@ if ($video) {
 	echo "data-setup='{}'>";
 	echo "<source src='" . $video . "' type='" . $v_type . ";" . $v_codec . "'>";
 	if ($subs = get_subtitles($video)) {
-		echo "<track kind='subtitles' src='" . $subs . "' srclang='en' label='English' />";
+		echo "<track kind='subtitles' src='" . $subs . "' srclang='en' label='Standard' />";
 	}
 	echo "Your browser does not support the video tag.";
 	echo "</video>";
