@@ -31,17 +31,37 @@ function format_date ($unix_timestamp) {
 
 function time_ago($tm, $rcs = 1, $c_level = 1) {
 	// credit: http://css-tricks.com/snippets/php/time-ago-function/
-	$cur_tm = time(); $dif = $cur_tm-$tm;
-	$pds = array('second','minute','hour','day'/*,'week'*/,'month','year','decade');
-	$lngh = array(1,60,3600,86400/*,604800*/,2630880,31570560,315705600,3157056000);
-	for($v = sizeof($lngh)-1; ($v >= 0)&&(($no = $dif/$lngh[$v])<=1); $v--); if($v < 0) $v = 0; $_tm = $cur_tm-($dif%$lngh[$v]);
-
-	$no = floor($no); if($no <> 1) $pds[$v] .='s'; $x=sprintf("%d %s ",$no,$pds[$v]);
-	if((($rcs-1 >= 1)&&($c_level <= $rcs-1) || $rcs == 0)&&($v >= 1)&&(($cur_tm-$_tm) > 0)) $x .= time_ago($_tm, $rcs, $c_level+1);
-	if ($no < 5 && strpos($pds[$v], 'second') !== false && $c_level == 1)
+	$cur_tm = time(); 
+	$dif = $cur_tm-$tm;
+	$pds_lngh = array(
+		'second' => 1,
+		'minute' => 60,
+		'hour'   => 3600,
+		'day'    => 86400,
+		'month'  => 2630880,
+		'year'   => 31570560
+	);
+	$pds = array_keys($pds_lngh);
+	$lngh = array_values($pds_lngh);
+	for ($v = sizeof($lngh) - 1; $v >= 0 && ($no = $dif / $lngh[$v]) <= 1; $v--); 
+	if ($v < 0) {
+		$v = 0; 
+	}
+	$_tm = $cur_tm - ($dif % $lngh[$v]);
+	$no = floor($no); 
+	if ($no <> 1) {
+		$pds[$v] .='s';
+	}
+	$x = sprintf("%d %s ", $no, $pds[$v]);
+	if ((($rcs-1 >= 1)&&($c_level <= $rcs-1) || $rcs == 0)&&($v >= 1)&&(($cur_tm-$_tm) > 0)) {
+		$x .= time_ago($_tm, $rcs, $c_level + 1);
+	}
+	if ($no < 5 && strpos($pds[$v], 'second') !== false && $c_level == 1) {
 		return "Downloading…";
-	if ($rcs <= $c_level || $v == 0)
+	}
+	if ($rcs <= $c_level || $v == 0) {
 		return $x . ' ago';
+	}
 	return $x;
 }
 
@@ -68,15 +88,12 @@ function accepted_mime_type ($mime_type) {
 }
 
 function is_safe_dir ($dir) {
-	return is_dir($dir) && 
-	       substr($dir, 0, 1) != '.' && 
-	       substr($dir, 0, 1) != '/' && 
-	       !preg_match('/[\\/]\./', $dir) &&
-	       !preg_match('/[\\/]\.{2}/', $dir);
+	return is_safe_dir_ajax($dir) &&
+	       substr($dir, 0, 1) != '/';
 }
 
 function is_safe_dir_ajax ($dir) {
-	return is_dir($dir) && 
+	return is_dir($dir) &&
 	       substr($dir, 0, 1) != '.' &&
 	       !preg_match('/[\\/]\./', $dir) &&
 	       !preg_match('/[\\/]\.{2}/', $dir);
@@ -112,7 +129,7 @@ function print_recent_files ($recent_files, $dir, $ajax = false) {
 	foreach ($recent_files as $path_to_file => $file_md) {
 		$original_path_to_file = $path_to_file;
 		if($ajax) $path_to_file = substr($path_to_file, strpos($path_to_file, DATA));
-		$print .= "<li class='item_recent replaceable'><a href='?v=" . rawurlencode($path_to_file) . "&amp;d=" . $dir . "'>" . get_display_name(get_filename($path_to_file)) . "</a>";
+		$print .= "<li class='item_recent replaceable'><a href='?v=" . rawurlencode($path_to_file) . "&amp;d=" . $dir . "' title='" . time_ago(filemtime($original_path_to_file)) . "'>" . get_display_name(get_filename($path_to_file)) . "</a>";
 	}
 	return $print;
 }
@@ -290,7 +307,7 @@ function list_files ($files, $dir, $video, $list_directory, $level) {
 		echo '<ol id="top_recent" class="top_recent" id="tr_placeholder"><li class="item_recent" id="recent_tag">Recent:</li><li class="item_recent" id="loading_tag">Loading…</li></ol>';
 		echo '</div>';
 		echo '<script>';
-		echo 'document.getElementById("listing").style.display = "none";';
+		echo 'document.getElementById("listing").style.opacity = ".4";';
 		echo 'document.getElementById("top_recent_wrapper").style.display = "block";';
 		echo '</script>';
 	}

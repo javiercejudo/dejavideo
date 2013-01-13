@@ -21,7 +21,7 @@ $(document).ready(function(){
 	$("abbr.timeago").timeago();
 
 	if ($('#listing').length) {
-		$('#listing').show();
+		$('#listing').css('opacity', '1');
 	}
 
 	if($('.display_novideo').length) {
