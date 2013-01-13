@@ -124,16 +124,6 @@ function get_poster ($video) {
 	return false;
 }
 
-function print_recent_files ($recent_files, $dir, $ajax = false) {
-	$print = '';
-	foreach ($recent_files as $path_to_file => $file_md) {
-		$original_path_to_file = $path_to_file;
-		if($ajax) $path_to_file = substr($path_to_file, strpos($path_to_file, DATA));
-		$print .= "<li class='item_recent replaceable'><a href='?v=" . rawurlencode($path_to_file) . "&amp;d=" . $dir . "' title='" . time_ago(filemtime($original_path_to_file)) . "'>" . get_display_name(get_filename($path_to_file)) . "</a>";
-	}
-	return $print;
-}
-
 function add_recent_file ($pathname, $file_md, $max_date, $recent_files, $amount) {
 	$num_files = count($recent_files);
 	if($file_md > $max_date || $num_files < $amount) {
@@ -157,7 +147,8 @@ function get_recent_files ($path = DATA, $amount = 3, $safe = true) {
 		  && accepted_mime_type(get_mime_type($pathname)) 
 		  && substr($file->getFilename(), 0, 1) != "." 
 		  && !preg_match('/\.part$/i', $file->getFilename())
-		  && time() - filemtime($pathname) > 5) {
+		  && time() - filemtime($pathname) > 5
+		) {
 			$file_md = filemtime($pathname);
 			if ($aux = add_recent_file($pathname, $file_md, $max_date, $recent_files, $amount)) {
 				$recent_files = $aux;
@@ -176,6 +167,36 @@ function get_recent_files ($path = DATA, $amount = 3, $safe = true) {
 		}
 	}
 	return $recent_files;
+}
+
+function print_recent_files ($recent_files, $dir, $ajax = false) {
+	$print = '';
+	foreach ($recent_files as $path_to_file => $file_md) {
+		$original_path_to_file = $path_to_file;
+		if($ajax) $path_to_file = substr($path_to_file, strpos($path_to_file, DATA));
+		$filenime = get_display_name(get_filename($path_to_file));
+		$print .= "<li class='item_recent replaceable'><a href='?v=";
+		$print .= rawurlencode($path_to_file);
+		$print .= "&amp;d=";
+		$print .= $dir;
+		$print .= "' title='";
+		$print .= "[";
+		$print .= time_ago(filemtime($original_path_to_file));
+		$print .= "] ";
+		$print .= $filenime;
+		$print .= "'>";
+		$print .= max_str_length($filenime, 50);
+		$print .= "</a>";
+	}
+	return $print;
+}
+
+function max_str_length ($string , $length, $ellipsis = '…') {
+	$result = $string;
+	if (strlen($string) > $length) {
+		$result = trim(substr($string, 0, 50)) . $ellipsis;
+	}
+	return $result;
 }
 
 function tokenize_current_location ($dir) {
