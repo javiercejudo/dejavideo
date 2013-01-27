@@ -56,7 +56,7 @@ function time_ago($tm, $rcs = 1, $c_level = 1) {
 	if ((($rcs-1 >= 1)&&($c_level <= $rcs-1) || $rcs == 0)&&($v >= 1)&&(($cur_tm-$_tm) > 0)) {
 		$x .= time_ago($_tm, $rcs, $c_level + 1);
 	}
-	if ($no < 5 && strpos($pds[$v], 'second') !== false && $c_level == 1) {
+	if ($no < SECONDS_OLD_BEFORE_SHOWING && strpos($pds[$v], 'second') !== false && $c_level == 1) {
 		return "Downloading…";
 	}
 	if ($rcs <= $c_level || $v == 0) {
@@ -141,13 +141,14 @@ function get_recent_files ($path = DATA, $amount = 3, $safe = true) {
 	$dir = new DirectoryIterator($path);
 	$recent_files = array();
 	$max_date = 0;
-	foreach($dir as $file){
+	foreach ($dir as $file) {
 		$pathname = $file->getPathname();
-		if(is_file($pathname) 
-		  && accepted_mime_type(get_mime_type($pathname)) 
-		  && substr($file->getFilename(), 0, 1) != "." 
-		  && !preg_match('/\.part$/i', $file->getFilename())
-		  && time() - filemtime($pathname) > 5
+		if (
+			is_file($pathname) 
+			&& accepted_mime_type(get_mime_type($pathname)) 
+			&& substr($file->getFilename(), 0, 1) != "." 
+			&& !preg_match('/\.part$/i', $file->getFilename())
+			&& time() - filemtime($pathname) > SECONDS_OLD_BEFORE_SHOWING
 		) {
 			$file_md = filemtime($pathname);
 			if ($aux = add_recent_file($pathname, $file_md, $max_date, $recent_files, $amount)) {
@@ -156,7 +157,7 @@ function get_recent_files ($path = DATA, $amount = 3, $safe = true) {
 			}
 		}
 		$is_dir_fn = $safe ? 'is_safe_dir' : 'is_safe_dir_ajax';
-		if($is_dir_fn($pathname) && !$file->isDot()) {
+		if ($is_dir_fn($pathname) && !$file->isDot()) {
 			$rec_recent_files = get_recent_files($pathname, $amount, $safe);
 			foreach ($rec_recent_files as $pathname => $file_md) {
 				if ($aux = add_recent_file($pathname, $file_md, $max_date, $recent_files, $amount)) {
@@ -173,8 +174,8 @@ function print_recent_files ($recent_files, $dir, $ajax = false) {
 	$print = '';
 	foreach ($recent_files as $path_to_file => $file_md) {
 		$original_path_to_file = $path_to_file;
-		if($ajax) $path_to_file = substr($path_to_file, strpos($path_to_file, DATA));
-		$filenime = get_display_name(get_filename($path_to_file));
+		if ($ajax) $path_to_file = substr($path_to_file, strpos($path_to_file, DATA));
+		$filename = get_display_name(get_filename($path_to_file));
 		$print .= "<li class='item_recent replaceable'><a href='?v=";
 		$print .= rawurlencode($path_to_file);
 		$print .= "&amp;d=";
@@ -183,18 +184,22 @@ function print_recent_files ($recent_files, $dir, $ajax = false) {
 		$print .= "[";
 		$print .= time_ago(filemtime($original_path_to_file));
 		$print .= "] ";
-		$print .= $filenime;
+		$print .= $filename;
 		$print .= "'>";
-		$print .= max_str_length($filenime, 50);
+		$print .= max_str_length($filename);
 		$print .= "</a>";
 	}
 	return $print;
 }
 
-function max_str_length ($string , $length, $ellipsis = '…') {
+function max_str_length (
+	$string,
+	$length = MAX_SIZE_RECENT_FILES,
+	$ellipsis = DEFAULT_ELLIPSIS
+) {
 	$result = $string;
 	if (strlen($string) > $length) {
-		$result = trim(substr($string, 0, 50)) . $ellipsis;
+		$result = trim(substr($string, 0, $length)) . $ellipsis;
 	}
 	return $result;
 }
@@ -278,7 +283,11 @@ function count_files($path, $count_files = false) {
 	$dir = new DirectoryIterator($path);
 	$n = 0;
 	foreach($dir as $file){
-		if(is_file($path.DS.$file) && (accepted_mime_type(get_mime_type($path.DS.$file)) || !ONLY_ACCEPTED_FILES) && substr($file, 0, 1) != ".") {
+		if (
+			is_file($path.DS.$file) 
+			&& (accepted_mime_type(get_mime_type($path.DS.$file)) 
+			|| !ONLY_ACCEPTED_FILES) && substr($file, 0, 1) != "."
+		) {
 			$n++;
 		}
 		if(is_safe_dir($path.DS.$file) && !$file->isDot()) {
@@ -309,7 +318,10 @@ function contains_supported_mime_types ($dir) {
 		if ($filename != "." && $filename != ".." && substr($filename, 0, 1) != ".") {
 			$path_to_file = $dir . DS . $filename;
 			if (!is_dir($path_to_file)) {
-				if (accepted_mime_type(get_mime_type($path_to_file))) {
+				if (
+					accepted_mime_type(get_mime_type($path_to_file))
+					&& time() - filemtime($path_to_file) > SECONDS_OLD_BEFORE_SHOWING
+				) {
 					$GLOBALS['found'] = 1;
 					return true;
 				}
@@ -337,7 +349,10 @@ function list_files ($files, $dir, $video, $list_directory, $level) {
 		if ($filename != "." && $filename != ".." && substr($filename, 0, 1) != ".") {
 			$new_dir = $dir . DS . $filename;
 			if (!is_dir($new_dir)) {
-				if (accepted_mime_type(get_mime_type($new_dir)) && time() - filemtime($new_dir) > 5) {
+				if (
+					accepted_mime_type(get_mime_type($new_dir)) 
+					&& time() - filemtime($new_dir) > SECONDS_OLD_BEFORE_SHOWING
+				) {
 					$is_current = ($new_dir === $video) ? ' current' : '';
 					echo "<li>";
 					echo "<p class='file'>";

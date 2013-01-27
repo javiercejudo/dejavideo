@@ -28,9 +28,10 @@ if ($list) {
 	list_directory($dir, $video, 1);
 	$time_end = microtime(true);
 	$execution_time = $time_end - $time_start;
-	echo "<p class='footer standard_box'>© Javier Cejudo " . date('Y') . ". ";
-	echo "Up to this point, the total execution time was " . number_format($execution_time, 4) . " seconds.";
-	echo "</div>";	
+	echo "<p class='footer standard_box'>© Javier Cejudo " . date('Y') . ".";
+	if (ENVIRONMENT === 'dev')
+		echo " Up to this point, the total execution time was " . number_format($execution_time, 4) . " seconds.";
+	echo "</p></div>";	
 }
 ?>
 <script src="vendor/js/jquery-1.8.2.min.js"></script>

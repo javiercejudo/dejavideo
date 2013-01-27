@@ -3,6 +3,8 @@
 date_default_timezone_set('Australia/Sydney');
 define('ROOT', dirname(__FILE__));
 
+define('ENVIRONMENT', 'dev'); // default: live; other values: dev
+
 define('TOP_TITLE', "<!--<a href='.#listing'>DejaVideo</a> by <a href='https://twitter.com/javiercejudo'>@javiercejudo</a>-->");
 define('DATA', 'data');                                 // default: 'data'
 define('POSTERS', 'data/posters');                      // default: 'data/posters'
@@ -14,8 +16,11 @@ define('DISPLAY_FILE_COUNT', false);                    // default: true
 define('REAL_FILE_COUNT', DISPLAY_FILE_COUNT && false); // default: false
 define('DISPLAY_FILE_DETAILS', true);                   // default: true
 define('AGO_NUMBER_OF_UNITS', 1);                       // default: 2; e.g. {weeks} {days} ago makes 2 units
+define('SECONDS_OLD_BEFORE_SHOWING', 5);                // default: 5;
+define('MAX_SIZE_RECENT_FILES', 50);                    // default: 50;
+define('DEFAULT_ELLIPSIS', '…');                        // default: '…';
 
-$ARRAY_MIME_TYPES_CODECS = array (
+$ARRAY_MIME_TYPES_CODECS = array(
 	'video/mp4'       => 'avc1.42E01E, mp4a.40.2',
 	'video/webm'      => 'vp8, vorbis',
 	'video/ogg'       => 'theora, vorbis',
@@ -32,7 +37,7 @@ define('ONLY_FOLDERS_WITH_ACCEPTED_FILES', true); // default: true
 define('ONLY_ACCEPTED_FILES', true);              // default: true
 define('DISPLAY_NAMES', true);                    // default: true
 
-$ARRAY_DISPLAY_NAMES = array (
+$ARRAY_DISPLAY_NAMES = array(
 	// pattern => replacement
 	'/([0-9]{2})-([0-9]{2})-(.*)\.mp4/i' => '$3',                                      // Covers 01-01-description
 	'/(.*)s([0-9]{2})e([0-9]{2}).*/i' => '$1 S$2 E$3',                                 // Covers S01E01
@@ -40,7 +45,7 @@ $ARRAY_DISPLAY_NAMES = array (
 	'/([^\(\[]*)[\(\[]?(18[789][0-9]{1}|19[0-9]{2}|20[0-3][0-9]{1}).*/'  => '$1 ($2)', // Covers movies with year
 	'/(^[0-9]{2}\.)(.*)/' => '$2',                                                     // Covers 01. Folder name
 	'/' . preg_quote(DATA, '/') . '/' => 'Home',                                       // Covers DATA folder, the root
-	'/[_\.-]/' => ' '                                                                  // spaces everywhere!
+	'/[\.\-_]/' => ' '                                                                 // spaces everywhere!
 );
 
 define('VIDEOJS', true); // default: true
