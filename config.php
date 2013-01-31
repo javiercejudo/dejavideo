@@ -13,7 +13,7 @@ define('DS', DIRECTORY_SEPARATOR);                      // default: DIRECTORY_SE
 define('SDS', '/');                                     // default: DS
 define('DEPTH', 2);                                     // default: 2; set DEPTH to (-1) for infinite depth
 define('DISPLAY_FILE_COUNT', false);                    // default: true
-define('REAL_FILE_COUNT', DISPLAY_FILE_COUNT && false); // default: false
+define('REAL_FILE_COUNT', DISPLAY_FILE_COUNT && false); // default: DISPLAY_FILE_COUNT && false
 define('DISPLAY_FILE_DETAILS', true);                   // default: true
 define('AGO_NUMBER_OF_UNITS', 1);                       // default: 2; e.g. {weeks} {days} ago makes 2 units
 define('SECONDS_OLD_BEFORE_SHOWING', 5);                // default: 5;
@@ -39,13 +39,15 @@ define('DISPLAY_NAMES', true);                    // default: true
 
 $ARRAY_DISPLAY_NAMES = array(
 	// pattern => replacement
+	'/([^\(\[]*)[\(\[]?(18[789][0-9]{1}|19[0-9]{2}|20[0-3][0-9]{1})\.(0[0-9]|1[0-2])\.(0[0-9]|1[0-9]|2[0-9]|3[0-1]).*/'  => '$1 $4/$3/$2', // Covers movies with year
 	'/([0-9]{2})-([0-9]{2})-(.*)\.mp4/i' => '$3',                                      // Covers 01-01-description
 	'/(.*)s([0-9]{2})e([0-9]{2}).*/i' => '$1 S$2 E$3',                                 // Covers S01E01
 	'/([^0-9]+)([0-9]{1,2})x([0-9]{2}).*/i' => '$1 S$2 E$3',                           // Covers 10x01
-	'/([^\(\[]*)[\(\[]?(18[789][0-9]{1}|19[0-9]{2}|20[0-3][0-9]{1}).*/'  => '$1 ($2)', // Covers movies with year
+	'/([^\(\[]*)[\(\[]?(18[789][0-9]|19[0-9]{2}|20[0-3][0-9]).*/'  => '$1 ($2)', // Covers movies with year
 	'/(^[0-9]{2}\.)(.*)/' => '$2',                                                     // Covers 01. Folder name
 	'/' . preg_quote(DATA, '/') . '/' => 'Home',                                       // Covers DATA folder, the root
-	'/[\.\-_]/' => ' '                                                                 // spaces everywhere!
+	'/(.*)\.(mp4|ogv|ogg|webm)$/i' => '$1',                                            // Covers file extension removal for other supported files
+	'/[\._]/' => ' '                                                                 // spaces everywhere!
 );
 
 define('VIDEOJS', true); // default: true

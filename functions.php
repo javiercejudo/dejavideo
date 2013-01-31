@@ -50,17 +50,24 @@ function time_ago($tm, $rcs = 1, $c_level = 1) {
 	$_tm = $cur_tm - ($dif % $lngh[$v]);
 	$no = floor($no); 
 	if ($no <> 1) {
-		$pds[$v] .='s';
+		$pds[$v] .= 's';
 	}
 	$x = sprintf("%d %s ", $no, $pds[$v]);
-	if ((($rcs-1 >= 1)&&($c_level <= $rcs-1) || $rcs == 0)&&($v >= 1)&&(($cur_tm-$_tm) > 0)) {
+	if (
+		(
+			($rcs-1 >= 1) && ($c_level <= $rcs-1) 
+			|| $rcs == 0
+		)
+		&& ($v >= 1)
+		&& ($cur_tm-$_tm > 0)
+	) {
 		$x .= time_ago($_tm, $rcs, $c_level + 1);
 	}
 	if ($no < SECONDS_OLD_BEFORE_SHOWING && strpos($pds[$v], 'second') !== false && $c_level == 1) {
 		return "Downloading…";
 	}
 	if ($rcs <= $c_level || $v == 0) {
-		return $x . ' ago';
+		return $x . 'ago';
 	}
 	return $x;
 }
@@ -93,10 +100,12 @@ function is_safe_dir ($dir) {
 }
 
 function is_safe_dir_ajax ($dir) {
-	return is_dir($dir) &&
-	       substr($dir, 0, 1) != '.' &&
-	       !preg_match('/[\\/]\./', $dir) &&
-	       !preg_match('/[\\/]\.{2}/', $dir);
+	return (
+		is_dir($dir)
+		&& substr($dir, 0, 1) != '.'
+		&& !preg_match('/[\\/]\./', $dir)
+		&& !preg_match('/[\\/]\.{2}/', $dir)
+	);
 }
 
 function get_subtitles ($video) {
@@ -181,10 +190,9 @@ function print_recent_files ($recent_files, $dir, $ajax = false) {
 		$print .= "&amp;d=";
 		$print .= $dir;
 		$print .= "' title='";
-		$print .= "[";
-		$print .= time_ago(filemtime($original_path_to_file));
-		$print .= "] ";
 		$print .= $filename;
+		$print .= "&#10;⌚ ";
+		$print .= time_ago(filemtime($original_path_to_file));
 		$print .= "'>";
 		$print .= max_str_length($filename);
 		$print .= "</a>";
@@ -252,7 +260,7 @@ function get_display_name($filename) {
 	foreach ($GLOBALS["ARRAY_DISPLAY_NAMES"] as $pattern => $replacement) {
 		$display_name = preg_replace($pattern, $replacement, $filename);
 		if (strcmp($filename, $display_name) !== 0)	{
-			return trim(preg_replace('/[\.\-_]/', ' ', $display_name));
+			return trim(str_replace('  ', ' ', preg_replace('/[\._]/', ' ', $display_name)));
 		}
 	}
 	return trim($filename);
@@ -269,7 +277,7 @@ function display_details($new_dir) {
 		echo format_bytes($filesize);
 	}
 	if ($filesize !== false && $filemtime !== false) {
-		echo " - ";
+		echo " ⌚&nbsp;";
 	}
 	if ($filemtime !== false) {
 		echo "<abbr class='timeago' title='" . date('c', $filemtime) . "'>" . format_date($filemtime, AGO_NUMBER_OF_UNITS) . "</abbr>";
