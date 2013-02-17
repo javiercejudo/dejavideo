@@ -56,7 +56,7 @@ $(document).ready(function(){
 		setup = (typeof setup === "undefined") ? false : true;
 		if ($('.novideo').length && $('.listing_container').length) {
 			$.ajax({
-				type: "POST",
+				type: "GET",
 				url: "ajax/recent_files.php",
 				data: { path: $('#current_dir').val() }
 			}).done(function( result ) {

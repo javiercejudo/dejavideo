@@ -260,7 +260,7 @@ function get_display_name($filename) {
 	foreach ($GLOBALS["ARRAY_DISPLAY_NAMES"] as $pattern => $replacement) {
 		$display_name = preg_replace($pattern, $replacement, $filename);
 		if (strcmp($filename, $display_name) !== 0)	{
-			return trim(str_replace('  ', ' ', preg_replace('/[\._]/', ' ', $display_name)));
+			return ucwords(trim(str_replace('  ', ' ', preg_replace('/[\._]/', ' ', $display_name))));
 		}
 	}
 	return trim($filename);
@@ -327,7 +327,7 @@ function contains_supported_mime_types ($dir) {
 			$path_to_file = $dir . DS . $filename;
 			if (!is_dir($path_to_file)) {
 				if (
-					accepted_mime_type(get_mime_type($path_to_file))
+					(accepted_mime_type(get_mime_type($path_to_file)) || !ONLY_ACCEPTED_FILES)
 					&& time() - filemtime($path_to_file) > SECONDS_OLD_BEFORE_SHOWING
 				) {
 					$GLOBALS['found'] = 1;
