@@ -42,14 +42,15 @@ define('DISPLAY_NAMES', true);                                           // defa
 $ARRAY_DISPLAY_NAMES = array(
 	// pattern => replacement
 	'/([^\(\[]*)[\(\[]?(18[789][0-9]{1}|19[0-9]{2}|20[0-3][0-9]{1})\.(0[0-9]|1[0-2])\.(0[0-9]|1[0-9]|2[0-9]|3[0-1]).*/'  => '$1 $4/$3/$2', // Covers movies with year
-	'/([0-9]{2})-([0-9]{2})-(.*)\.mp4/i' => '$3',                                      // Covers 01-01-description
-	'/(.*)s([0-9]{2})e([0-9]{2}).*/i' => '$1 S$2 E$3',                                 // Covers S01E01
-	'/([^0-9]+)([0-9]{1,2})x([0-9]{2}).*/i' => '$1 S$2 E$3',                           // Covers 10x01
-	'/([^\(\[]*)[\(\[]?(18[789][0-9]|19[0-9]{2}|20[0-3][0-9]).*/'  => '$1 ($2)', // Covers movies with year
-	'/(^[0-9]{2}\.)(.*)/' => '$2',                                                     // Covers 01. Folder name
-	'/' . preg_quote(DATA, '/') . '/' => 'Home',                                       // Covers DATA folder, the root
-	'/(.*)\.(mp4|ogv|ogg|webm)$/i' => '$1',                                            // Covers file extension removal for other supported files
-	'/[\._]/' => ' '                                                                 // spaces everywhere!
+	'/([0-9]{2})-([0-9]{2})-(.*)\.mp4/i' => '$3',                                 // Covers 01-01-description
+	'/(.*)s([0-9]{2})e([0-9]{2}).*/i' => '$1 S$2 E$3',                            // Covers S01E01
+	'/([^0-9]+)([0-9]{1})x([0-9]{2}).*/i' => '$1 S0$2 E$3',                       // Covers 1x01
+	'/([^0-9]+)([0-9]{2})x([0-9]{2}).*/i' => '$1 S$2 E$3',                        // Covers 10x01
+	'/([^\(\[]*)[\(\[]?(18[789][0-9]|19[0-9]{2}|20[0-3][0-9]).*/'  => '$1 ($2)',  // Covers movies with year
+	'/(^[0-9]{2}\.)(.*)/' => '$2',                                                // Covers 01. Folder name
+	'/' . preg_quote(DATA, '/') . '/' => 'Home',                                  // Covers DATA folder, the root
+	'/(.*)\.(mp4|ogv|ogg|webm)$/i' => '$1',                                       // Covers file extension removal for other supported files
+	'/[\._]/' => ' '                                                              // spaces everywhere!
 );
 
 define('VIDEOJS', true); // default: true
