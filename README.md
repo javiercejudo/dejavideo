@@ -2,7 +2,7 @@
 
 Requires PHP 5.4.0.
 
-Check the demo page at [dejavideo.javiercejudo.com/](http://dejavideo.javiercejudo.com/).
+Check the demo page at [dejavideo.javiercejudo.com](http://dejavideo.javiercejudo.com/).
 
 Stream your own videos easily, either on your private network or to the 
 world using HTML5 video. I use the app to share all my videos from my main 
