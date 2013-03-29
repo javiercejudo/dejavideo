@@ -29,8 +29,9 @@ if ($list) {
 	$time_end = microtime(true);
 	$execution_time = $time_end - $time_start;
 	echo "<p class='footer standard_box'>© Javier Cejudo " . date('Y') . ".";
+	echo " <a href='https://github.com/javiercejudo/DejaVideo/'>Fork on Github</a>.";	
 	if (ENVIRONMENT === 'dev')
-		echo " Up to this point, the total execution time was " . number_format($execution_time, 4) . " seconds.";
+		echo " <br>Up to this point, the total execution time was " . number_format($execution_time, 4) . " seconds.";
 	echo "</p></div>";	
 }
 ?>
