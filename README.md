@@ -6,7 +6,7 @@ Check the demo page at [dejavideo.javiercejudo.com](http://dejavideo.javiercejud
 
 Stream your own videos easily, either on your private network or to the 
 world using HTML5 video. I use the app to share all my videos from my main 
-device to any devicesin the house connected to the Wi-Fi, including tablets 
+device to any devices in the house connected to the Wi-Fi, including tablets 
 and smartphones. Fully functional without JavaScript and Flash.
 
 ## Features:
