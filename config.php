@@ -7,7 +7,7 @@ define('ENVIRONMENT', 'dev');             // default: live; other values: dev
 define('OPTIMISED_SUFFIX', '_optimised'); // default: '_optimised'
 
 define('TOP_TITLE', "<!--<a href='.#listing'>DejaVideo</a> by <a href='https://twitter.com/javiercejudo'>@javiercejudo</a>-->");
-define('DATA', 'data');                                 // default: 'data'
+define('DATA', 'data/local');                           // default: 'data'
 define('POSTERS', 'data/posters');                      // default: 'data/posters'
 define('DEFAULT_POSTER', 'img/dejavideo.png');          // default: 'img/dejavideo.png'
 define('DS', DIRECTORY_SEPARATOR);                      // default: DIRECTORY_SEPARATOR

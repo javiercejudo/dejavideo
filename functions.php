@@ -213,24 +213,50 @@ function max_str_length (
 }
 
 function tokenize_current_location ($dir) {
-	return array_filter(explode(DS, $dir));
+	$custom_dir = get_display_name($dir);
+	$display_dir = get_display_dir($dir);
+	$raw_dir = $display_dir[0];
+	$match_dir = $display_dir[1][0];
+
+	$keys = array_map(
+		'get_display_name',
+		array_filter(
+			explode(
+				DS,
+				$custom_dir
+			)
+		)
+	);
+
+	$values = array_filter(
+		explode(
+			DS,
+			str_replace(
+				$match_dir,
+				rawurlencode($match_dir),
+				$raw_dir
+			)
+		)
+	);
+
+	return array_combine($keys, $values);
 }
 
 function display_current_location ($dir) {
 	$path_trail = '';
 	$current_location = '';
 	$tokens = tokenize_current_location($dir);
-	foreach ($tokens as $token) {
+	foreach ($tokens as $display_token => $token) {
 		$path_trail .= $token;
 		$dir_active = ($token !== end($tokens)) ? '' : ' dir_active';
-		$current_location .= "<a class='dir$dir_active' href='?v=" . rawurlencode($path_trail) . "'>" . get_display_name($token);
+		$current_location .= "<a class='dir$dir_active' href='?v=" . $path_trail . "'>" . $display_token;
 		if (DISPLAY_FILE_COUNT) {
 			$current_location .= " <span class='file_count'>(" . count_files($path_trail, REAL_FILE_COUNT) . ")</span>";
 		}
 		$current_location .= "</a>";
 		if ($token !== end($tokens)) {
 			$current_location .= ' ' . SDS . ' ';
-			$path_trail .= DS;
+			$path_trail .= rawurlencode(DS);
 		}
 	}
 	return $current_location;
@@ -259,11 +285,25 @@ function get_display_name($filename) {
 	if (!DISPLAY_NAMES) return $filename;
 	foreach ($GLOBALS["ARRAY_DISPLAY_NAMES"] as $pattern => $replacement) {
 		$display_name = preg_replace($pattern, $replacement, $filename);
-		if (strcmp($filename, $display_name) !== 0)	{
-			return ucwords(trim(str_replace('  ', ' ', preg_replace('/[\._]/', ' ', $display_name))));
+		if (strcmp($filename, $display_name) !== 0) {
+			if (strpos($display_name, DS) !== false) {
+				return implode(DS, array_map('get_display_name', explode(DS, $display_name)));
+			}
+			
+			return ucwords(trim(preg_replace('/[\._]|[\ ]{2,}/', ' ', $display_name)));
 		}
 	}
 	return trim($filename);
+}
+
+function get_display_dir($dir) {
+	if (!DISPLAY_NAMES) return $dir;
+	foreach ($GLOBALS["ARRAY_DISPLAY_NAMES"] as $pattern => $replacement) {
+		if (preg_match($pattern, $dir, $matches)) {
+			return array($dir, $matches);
+		}
+	}
+	return array($dir, array());
 }
 
 function display_details($new_dir) {
