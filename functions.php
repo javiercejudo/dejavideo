@@ -214,9 +214,7 @@ function max_str_length (
 
 function tokenize_current_location ($dir) {
 	$custom_dir = get_display_name($dir);
-	$display_dir = get_display_dir($dir);
-	$raw_dir = $display_dir[0];
-	$match_dir = $display_dir[1][0];
+	$raw_dir = $dir;
 
 	$keys = array_map(
 		'get_display_name',
@@ -232,8 +230,8 @@ function tokenize_current_location ($dir) {
 		explode(
 			DS,
 			str_replace(
-				$match_dir,
-				rawurlencode($match_dir),
+				DATA,
+				rawurlencode(DATA),
 				$raw_dir
 			)
 		)
@@ -290,20 +288,10 @@ function get_display_name($filename) {
 				return implode(DS, array_map('get_display_name', explode(DS, $display_name)));
 			}
 			
-			return ucwords(trim(preg_replace('/[\._]|[\ ]{2,}/', ' ', $display_name)));
+			return ucwords(strtolower(trim(preg_replace('/[\._]|[\ ]{2,}/', ' ', $display_name))));
 		}
 	}
-	return trim($filename);
-}
-
-function get_display_dir($dir) {
-	if (!DISPLAY_NAMES) return $dir;
-	foreach ($GLOBALS["ARRAY_DISPLAY_NAMES"] as $pattern => $replacement) {
-		if (preg_match($pattern, $dir, $matches)) {
-			return array($dir, $matches);
-		}
-	}
-	return array($dir, array());
+	return ucwords(strtolower(trim($filename)));
 }
 
 function display_details($new_dir) {
