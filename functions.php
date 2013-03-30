@@ -270,8 +270,8 @@ function get_page_title($video, $dir) {
 			$tokens = tokenize_current_location($dir);
 			echo '"';
 			$title = '';
-			foreach ($tokens as $token) {
-				$title .= get_display_name($token) . SDS;
+			foreach ($tokens as $display_token => $token) {
+				$title .= $display_token . SDS;
 			}
 			echo substr($title, 0, -1);
 			echo '"';
