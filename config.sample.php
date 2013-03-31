@@ -3,20 +3,20 @@
 date_default_timezone_set('Australia/Sydney');
 define('ROOT', dirname(__FILE__));
 
-define('ENVIRONMENT', 'dev');             // default: live; other values: dev
-define('OPTIMISED_SUFFIX', ''); // default: '_optimised'
+define('ENVIRONMENT', 'live');            // default: live; other values: dev
+define('OPTIMISED_SUFFIX', '_optimised'); // default: '_optimised'
 
 define('TOP_TITLE', "<!--<a href='.#listing'>DejaVideo</a> by <a href='https://twitter.com/javiercejudo'>@javiercejudo</a>-->");
-define('DATA', 'data/local');                           // default: 'data'
+define('DATA', 'data');                                 // default: 'data'
 define('POSTERS', 'data/posters');                      // default: 'data/posters'
 define('DEFAULT_POSTER', 'img/dejavideo.png');          // default: 'img/dejavideo.png'
 define('DS', DIRECTORY_SEPARATOR);                      // default: DIRECTORY_SEPARATOR
-define('SDS', '/');                                     // default: DS
+define('SDS', DS);                                      // default: DS
 define('DEPTH', 2);                                     // default: 2; set DEPTH to (-1) for infinite depth
-define('DISPLAY_FILE_COUNT', false);                    // default: true
+define('DISPLAY_FILE_COUNT', true);                     // default: true
 define('REAL_FILE_COUNT', DISPLAY_FILE_COUNT && false); // default: DISPLAY_FILE_COUNT && false
 define('DISPLAY_FILE_DETAILS', true);                   // default: true
-define('AGO_NUMBER_OF_UNITS', 1);                       // default: 2; e.g. {weeks} {days} ago makes 2 units
+define('AGO_NUMBER_OF_UNITS', 1);                       // deprecated. default: 1; e.g. {weeks} {days} ago makes 2 units
 define('SECONDS_OLD_BEFORE_SHOWING', 5);                // default: 5;
 define('MAX_SIZE_RECENT_FILES', 50);                    // default: 50;
 define('DEFAULT_ELLIPSIS', '…');                        // default: '…';
