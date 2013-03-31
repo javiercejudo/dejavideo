@@ -284,10 +284,6 @@ video {
 
 /* Desktop and Tablets (landscape) ----------- */
 @media only screen and (min-device-width: 768px) and (max-device-width: 1200px) and (orientation: landscape) {
-	ul, li {
-		margin-left: 5px;
-	}
-
 	.level-2 {
 		-webkit-column-count: 3;
 		   -moz-column-count: 3;
