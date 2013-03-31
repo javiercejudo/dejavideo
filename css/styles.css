@@ -106,6 +106,7 @@ video {
 
 	.level-1 > li {
 		margin-left: 0;
+		margin-top: 30px;
 	}
 
 .level-2 {
@@ -261,15 +262,16 @@ video {
 }
 
 @media only screen and (max-width: 768px) {
+	ul, li {
+		margin-left: 5px;
+	}
+
 	.level-2 {
 		-webkit-column-count: 1;
 		   -moz-column-count: 1;
 		        column-count: 1;
 	}
 	
-	ul, li {
-		margin-left: 5px;
-	}
 }
 
 /*
@@ -282,15 +284,35 @@ video {
 
 /* Desktop and Tablets (landscape) ----------- */
 @media only screen and (min-device-width: 768px) and (max-device-width: 1200px) and (orientation: landscape) {
+	ul, li {
+		margin-left: 5px;
+	}
+
 	.level-2 {
 		-webkit-column-count: 3;
 		   -moz-column-count: 3;
 		        column-count: 3;
 	}
+}
 
-	ul, li {
-		margin-left: 5px;
+@media only screen and (max-width: 480px) {
+	.display_container .novideo {
+		position: static;
 	}
+
+	.nav .dir {
+		display: block;
+		margin-top: -1px;
+	}
+
+	.nav .sep {
+		display: none;
+	}
+
+	.listing_container {
+		margin-top: 20px;
+	}
+	
 }
 
 /* Tablets only (portrait) ----------- */
@@ -316,8 +338,8 @@ video {
 		margin: 0 0 10px;
 		padding: 0;
 	}
-	svg, .display_novideo, .novideo {
-		display: none;
+	svg, .display_novideo, .novideo, #top_recent_wrapper {
+		display: none !important;
 	}
 	.level-2 > li, .dir {
 		border: none;

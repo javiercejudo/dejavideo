@@ -253,7 +253,7 @@ function display_current_location ($dir) {
 		}
 		$current_location .= "</a>";
 		if ($token !== end($tokens)) {
-			$current_location .= ' ' . SDS . ' ';
+			$current_location .= ' <span class="sep">' . SDS . '</span> ';
 			$path_trail .= rawurlencode(DS);
 		}
 	}
@@ -356,7 +356,7 @@ function contains_supported_mime_types ($dir) {
 			if (!is_dir($path_to_file)) {
 				if (
 					(accepted_mime_type(get_mime_type($path_to_file)) || !ONLY_ACCEPTED_FILES)
-					&& time() - filemtime($path_to_file) > SECONDS_OLD_BEFORE_SHOWING
+					&& time() - @filemtime($path_to_file) > SECONDS_OLD_BEFORE_SHOWING
 				) {
 					$GLOBALS['found'] = 1;
 					return true;
@@ -387,7 +387,7 @@ function list_files ($files, $dir, $video, $list_directory, $level) {
 			if (!is_dir($new_dir)) {
 				if (
 					accepted_mime_type(get_mime_type($new_dir)) 
-					&& time() - filemtime($new_dir) > SECONDS_OLD_BEFORE_SHOWING
+					&& time() - @filemtime($new_dir) > SECONDS_OLD_BEFORE_SHOWING
 				) {
 					$is_current = ($new_dir === $video) ? ' current' : '';
 					echo "<li>";

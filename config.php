@@ -4,7 +4,7 @@ date_default_timezone_set('Australia/Sydney');
 define('ROOT', dirname(__FILE__));
 
 define('ENVIRONMENT', 'dev');             // default: live; other values: dev
-define('OPTIMISED_SUFFIX', '_optimised'); // default: '_optimised'
+define('OPTIMISED_SUFFIX', ''); // default: '_optimised'
 
 define('TOP_TITLE', "<!--<a href='.#listing'>DejaVideo</a> by <a href='https://twitter.com/javiercejudo'>@javiercejudo</a>-->");
 define('DATA', 'data/local');                           // default: 'data'
@@ -28,10 +28,10 @@ $ARRAY_MIME_TYPES_CODECS = array(
 	'application/ogg' => 'theora, vorbis',
 
 	// The following would need plugins in any browser
-	// 'video/mpeg'      => '',
-	// 'video/x-msvideo' => '',
-	// 'video/x-matroska'=> '',
-	// 'application/octet-stream'=> ''
+	'video/mpeg'      => '',
+	'video/x-msvideo' => '',
+	'video/x-matroska'=> '',
+	'application/octet-stream'=> ''
 );
 
 define('HIDE_LIST_WHEN_VIDEO_SELECTED', true);                           // default: true

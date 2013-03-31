@@ -33,7 +33,7 @@ if ($video) {
 	echo "<div class='display display_novideo'></div>";
 }
 if (!$video || !HIDE_LIST_WHEN_VIDEO_SELECTED) {
-	echo "<p class='current_container novideo'>";
+	echo "<p class='nav current_container novideo'>";
 	echo display_current_location($dir);
 	echo "</p>";
 }
