@@ -338,7 +338,7 @@ function count_files($path, $count_files = false) {
 }
 
 function scandir_grouped ($dir, $sorting_order = SCANDIR_SORT_ASCENDING) {
-	$files = scandir($dir, $sorting_order);
+	$files = scandir($dir); // future: scandir($dir, $sorting_order);
 	$no_dirs = $dirs = array();
     foreach($files as $filename) {
 		if (!is_dir($dir . DS . $filename)) $no_dirs[] = $filename;
