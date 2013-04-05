@@ -30,7 +30,7 @@ autohide for control bar…
 - Recent files bar that scrolls horizontally by dragging it.
 - Custom start time by adding a number of seconds after the hash (ie. `url#60`
 would make the video start at minute 1). The URL gets periodical 
-updates so you can keep the link and start where you left off.<sup>*</sup>
+updates so you can keep the link and start where you left off.
 
 ## Video support: <sup>*</sup>
 
@@ -46,4 +46,4 @@ updates so you can keep the link and start where you left off.<sup>*</sup>
 Copy the application on a folder on your web root and put your videos 
 inside the `data/` folder (alternatively, you can create a symlink to any
 folder on your system), organised in subfolders or however you prefer.
-Access the app by a local URL like `192.168.?.?/dejavideo`. Enjoy!
+Access the app by a local URL like `localhost/dejavideo`. Enjoy!
