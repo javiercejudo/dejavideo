@@ -271,11 +271,7 @@ function get_display_name($filename) {
 	if (!DISPLAY_NAMES) return $filename;
 	foreach ($GLOBALS["ARRAY_DISPLAY_NAMES"] as $pattern => $replacement) {
 		$display_name = preg_replace($pattern, $replacement, $filename);
-		if (strcmp($filename, $display_name) !== 0) {
-			if (strpos($display_name, DS) !== false) {
-				return implode(DS, array_map('get_display_name', explode(DS, $display_name)));
-			}
-			
+		if (strcmp($filename, $display_name) !== 0) {			
 			return ucwords(strtolower(trim(preg_replace('/[\._]|[\ ]{2,}/', ' ', $display_name))));
 		}
 	}
