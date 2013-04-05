@@ -213,31 +213,19 @@ function max_str_length (
 }
 
 function tokenize_current_location ($dir) {
-	$custom_dir = get_display_name($dir);
-	$raw_dir = $dir;
 
-	$keys = array_map(
-		'get_display_name',
-		array_filter(
-			explode(
-				DS,
-				$custom_dir
-			)
-		)
-	);
+	$home_key = array('Home');
+	$home_val = array(DATA);
 
-	$values = array_filter(
-		explode(
-			DS,
-			str_replace(
-				DATA,
-				rawurlencode(DATA),
-				$raw_dir
-			)
-		)
-	);
+	$dir_without_home = substr($dir, strlen(DATA) + 1);
 
-	return array_combine($keys, $values);
+	$rest_vals = array_filter(explode(DS, $dir_without_home));
+	$rest_keys = array_map('get_display_name', $rest_vals);
+
+	$keys = array_merge($home_key, $rest_keys);
+	$vals = array_merge($home_val, $rest_vals);
+
+	return array_combine($keys, $vals);
 }
 
 function display_current_location ($dir) {
@@ -247,14 +235,14 @@ function display_current_location ($dir) {
 	foreach ($tokens as $display_token => $token) {
 		$path_trail .= $token;
 		$dir_active = ($token !== end($tokens)) ? '' : ' dir_active';
-		$current_location .= "<a class='dir$dir_active' href='?v=" . $path_trail . "'>" . $display_token;
+		$current_location .= "<a class='dir$dir_active' href='?v=" . rawurlencode($path_trail) . "'>" . $display_token;
 		if (DISPLAY_FILE_COUNT) {
 			$current_location .= " <span class='file_count'>(" . count_files($path_trail, REAL_FILE_COUNT) . ")</span>";
 		}
 		$current_location .= "</a>";
 		if ($token !== end($tokens)) {
 			$current_location .= ' <span class="sep">' . SDS . '</span> ';
-			$path_trail .= rawurlencode(DS);
+			$path_trail .= DS;
 		}
 	}
 	return $current_location;
