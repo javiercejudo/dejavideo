@@ -3,8 +3,8 @@
 date_default_timezone_set('Australia/Sydney');
 define('ROOT', dirname(__FILE__));
 
-define('ENVIRONMENT', 'live');            // default: live; other values: dev
-define('OPTIMISED_SUFFIX', '_optimised'); // default: '_optimised'
+define('ENVIRONMENT', 'live');  // default: live; other values: dev
+define('OPTIMISED_SUFFIX', ''); // default: ''
 
 define('TOP_TITLE', "<!--<a href='.#listing'>DejaVideo</a> by <a href='https://twitter.com/javiercejudo'>@javiercejudo</a>-->");
 define('DATA', 'data');                                 // default: 'data'
@@ -14,12 +14,13 @@ define('DEFAULT_POSTER', 'img/dejavideo.png');          // default: 'img/dejavid
 define('DS', DIRECTORY_SEPARATOR);                      // default: DIRECTORY_SEPARATOR
 define('SDS', DS);                                      // default: DS
 define('DEPTH', 2);                                     // default: 2; set DEPTH to (-1) for infinite depth
-define('DISPLAY_FILE_COUNT', true);                     // default: true
+define('DISPLAY_FILE_COUNT', false);                    // default: false
 define('REAL_FILE_COUNT', DISPLAY_FILE_COUNT && false); // default: DISPLAY_FILE_COUNT && false
 define('DISPLAY_FILE_DETAILS', true);                   // default: true
 define('AGO_NUMBER_OF_UNITS', 1);                       // deprecated. default: 1; e.g. {weeks} {days} ago makes 2 units
 define('SECONDS_OLD_BEFORE_SHOWING', 5);                // default: 5;
-define('MAX_SIZE_RECENT_FILES', 50);                    // default: 50;
+define('MAX_AMOUNT_RECENT_FILES', 20);                  // default: 20;
+define('MAX_TEXT_SIZE_RECENT_FILES', 50);               // default: 50;
 define('DEFAULT_ELLIPSIS', '…');                        // default: '…';
 
 $ARRAY_MIME_TYPES_CODECS = array(

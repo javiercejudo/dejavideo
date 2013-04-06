@@ -1,14 +1,14 @@
 <?php
 
-function get_extension ($path) {
+function get_extension($path) {
 	$info = pathinfo($path);
 	return $info['extension'];
 }
-function get_dirname ($path) {
+function get_dirname($path) {
 	$info = pathinfo($path);
 	return $info['dirname'];
 }
-function get_filename ($path) {
+function get_filename($path) {
 	$info = pathinfo($path);
 	return $info['basename'];
 }
@@ -25,7 +25,7 @@ function format_bytes($a_bytes) {
 	}
 }
 
-function format_date ($unix_timestamp) {
+function format_date($unix_timestamp) {
 	return date('M j, Y h:i A', $unix_timestamp);
 }
 
@@ -72,34 +72,34 @@ function time_ago($tm, $rcs = 1, $c_level = 1) {
 	return $x;
 }
 
-function get_codec ($mime_type) {
+function get_codec($mime_type) {
 	$codecs = $GLOBALS["ARRAY_MIME_TYPES_CODECS"];
 	return $codecs[$mime_type];
 }
 
-function get_mime_type ($file) {
+function get_mime_type($file) {
 	$finfo     = finfo_open(FILEINFO_MIME_TYPE);
 	$mime_type = @finfo_file($finfo, $file);
 	finfo_close($finfo);
 	if ($mime_type === 'application/octet-stream' && get_extension($file) === 'webm') {
 		return 'video/webm'; // solves problems with some webm files
 	}
-	if ($mime_type !== false){
+	if ($mime_type !== false) {
 		return $mime_type;
 	}
 	return 'application/octet-stream';
 }
 
-function accepted_mime_type ($mime_type) {
+function accepted_mime_type($mime_type) {
 	return array_key_exists($mime_type, $GLOBALS["ARRAY_MIME_TYPES_CODECS"]);
 }
 
-function is_safe_dir ($dir) {
+function is_safe_dir($dir) {
 	return is_safe_dir_ajax($dir) &&
 	       substr($dir, 0, 1) != '/';
 }
 
-function is_safe_dir_ajax ($dir) {
+function is_safe_dir_ajax($dir) {
 	return (
 		is_dir($dir)
 		&& substr($dir, 0, 1) != '.'
@@ -108,7 +108,7 @@ function is_safe_dir_ajax ($dir) {
 	);
 }
 
-function get_subtitles ($video) {
+function get_subtitles($video) {
 	$info = pathinfo($video);
 	$subtitles = $info['dirname'] . DIRECTORY_SEPARATOR . 'subs' .  DIRECTORY_SEPARATOR . $info['filename'] . '.vtt';
 	if (is_file($subtitles)) return $subtitles;
@@ -121,7 +121,7 @@ function get_subtitles ($video) {
 	return false;
 }
 
-function get_poster ($video) {
+function get_poster($video) {
 	$info = pathinfo($video);
 	$poster = $info['dirname'] . DIRECTORY_SEPARATOR . 'posters' .  DIRECTORY_SEPARATOR . $info['filename'] . '.jpg';
 	if (is_file($poster)) return $poster;
@@ -133,12 +133,12 @@ function get_poster ($video) {
 	return false;
 }
 
-function add_recent_file ($pathname, $file_md, $max_date, $recent_files, $amount) {
+function add_recent_file($pathname, $file_md, $max_date, $recent_files, $amount) {
 	$num_files = count($recent_files);
-	if($file_md > $max_date || $num_files < $amount) {
+	if ($file_md > $max_date || $num_files < $amount) {
 		$recent_files[$pathname] = $file_md;
 		arsort($recent_files);
-		if($num_files > $amount) {
+		if ($num_files >= $amount) {
 			array_pop($recent_files);
 		}
 		return $recent_files;
@@ -146,7 +146,7 @@ function add_recent_file ($pathname, $file_md, $max_date, $recent_files, $amount
 	return false;
 }
 
-function get_recent_files ($path = DATA, $amount = 3, $safe = true) {
+function get_recent_files($path = DATA, $amount = MAX_AMOUNT_RECENT_FILES, $sync = true) {
 	$dir = new DirectoryIterator($path);
 	$recent_files = array();
 	$max_date = 0;
@@ -165,9 +165,9 @@ function get_recent_files ($path = DATA, $amount = 3, $safe = true) {
 				$max_date = end($recent_files);
 			}
 		}
-		$is_dir_fn = $safe ? 'is_safe_dir' : 'is_safe_dir_ajax';
+		$is_dir_fn = $sync ? 'is_safe_dir' : 'is_safe_dir_ajax';
 		if ($is_dir_fn($pathname) && !$file->isDot()) {
-			$rec_recent_files = get_recent_files($pathname, $amount, $safe);
+			$rec_recent_files = get_recent_files($pathname, $amount, $sync);
 			foreach ($rec_recent_files as $pathname => $file_md) {
 				if ($aux = add_recent_file($pathname, $file_md, $max_date, $recent_files, $amount)) {
 					$recent_files = $aux;
@@ -179,7 +179,7 @@ function get_recent_files ($path = DATA, $amount = 3, $safe = true) {
 	return $recent_files;
 }
 
-function print_recent_files ($recent_files, $dir, $ajax = false) {
+function print_recent_files($recent_files, $dir, $ajax = false) {
 	$print = '';
 	foreach ($recent_files as $path_to_file => $file_md) {
 		$original_path_to_file = $path_to_file;
@@ -200,9 +200,9 @@ function print_recent_files ($recent_files, $dir, $ajax = false) {
 	return $print;
 }
 
-function max_str_length (
+function max_str_length(
 	$string,
-	$length = MAX_SIZE_RECENT_FILES,
+	$length = MAX_TEXT_SIZE_RECENT_FILES,
 	$ellipsis = DEFAULT_ELLIPSIS
 ) {
 	$result = $string;
@@ -212,7 +212,7 @@ function max_str_length (
 	return $result;
 }
 
-function tokenize_current_location ($dir) {
+function tokenize_current_location($dir) {
 
 	$home_key = array(HOME_NAME);
 	$home_val = array(DATA);
@@ -228,7 +228,7 @@ function tokenize_current_location ($dir) {
 	return array_combine($keys, $vals);
 }
 
-function display_current_location ($dir) {
+function display_current_location($dir) {
 	$path_trail = '';
 	$current_location = '';
 	$tokens = tokenize_current_location($dir);
@@ -249,7 +249,7 @@ function display_current_location ($dir) {
 }
 
 function get_page_title($video, $dir) {
-	if($video) {
+	if ($video) {
 		echo get_display_name(get_filename($video));
 	} else {
 		if ($dir !== DATA) {
@@ -302,7 +302,7 @@ function display_details($new_dir) {
 function count_files($path, $count_files = false) {
 	$dir = new DirectoryIterator($path);
 	$n = 0;
-	foreach($dir as $file){
+	foreach ($dir as $file) {
 		if (
 			is_file($path.DS.$file) 
 			&& (accepted_mime_type(get_mime_type($path.DS.$file)) 
@@ -310,7 +310,7 @@ function count_files($path, $count_files = false) {
 		) {
 			$n++;
 		}
-		if(is_safe_dir($path.DS.$file) && !$file->isDot()) {
+		if (is_safe_dir($path.DS.$file) && !$file->isDot()) {
 			$GLOBALS['found'] = 0;
 			if (contains_supported_mime_types($path.DS.$file) || !ONLY_FOLDERS_WITH_ACCEPTED_FILES) {
 				if (!$count_files) $n++;
@@ -321,17 +321,17 @@ function count_files($path, $count_files = false) {
 	return $n;
 }
 
-function scandir_grouped ($dir, $sorting_order = SCANDIR_SORT_ASCENDING) {
+function scandir_grouped($dir, $sorting_order = SCANDIR_SORT_ASCENDING) {
 	$files = scandir($dir); // future: scandir($dir, $sorting_order);
 	$no_dirs = $dirs = array();
-    foreach($files as $filename) {
+    foreach ($files as $filename) {
 		if (!is_dir($dir . DS . $filename)) $no_dirs[] = $filename;
 		else $dirs[] = $filename;
     }
     return array_merge($no_dirs, $dirs);
 }
 
-function contains_supported_mime_types ($dir) {
+function contains_supported_mime_types($dir) {
 	if ($GLOBALS['found']) return true;
 	$files = scandir_grouped($dir, SCANDIR_SORT_NONE);
 	foreach ($files as $filename) {
@@ -353,7 +353,7 @@ function contains_supported_mime_types ($dir) {
 	return $GLOBALS['found'];
 }
 
-function list_files ($files, $dir, $video, $list_directory, $level) {
+function list_files($files, $dir, $video, $list_directory, $level) {
 	if (DEPTH > -1 && $level > DEPTH) return 0;
 	if ($level === 1) {
 		echo '<div id="top_recent_wrapper" class="tr_placeholder standard_box" style="display: none;">';
@@ -421,7 +421,7 @@ function list_files ($files, $dir, $video, $list_directory, $level) {
 	echo "</ul>";
 }
 
-function list_directory ($dir, $video, $level) {
+function list_directory($dir, $video, $level) {
 	if ($files = scandir_grouped($dir, SCANDIR_SORT_ASCENDING)) {
 		list_files($files, $dir, $video, __FUNCTION__, $level);
 	} else return false;
