@@ -26,7 +26,7 @@ if ($video) {
 	echo "<p class='current_container'>";
 	echo "<span class='current' title='" . $n_video . "'>" . get_display_name(basename($n_video)) . "</span>";
 	echo " &nbsp;&nbsp;&nbsp;<a href='$video' title='Download video!'>" . DOWNLOAD_ICON . "&nbsp;Download</a>";
-	echo " &nbsp;&nbsp;&nbsp;<a href='?v=" . rawurlencode($dir) . "'  title='Close and go back'>" . CLOSE_ICON . "&nbsp;Close</a>";
+	echo " &nbsp;&nbsp;&nbsp;<a href='?d=" . rawurlencode($dir) . "'  title='Close and go back'>" . CLOSE_ICON . "&nbsp;Close</a>";
 	echo "</p>";
 } else {
 	echo "<h1 class='title'>" . TOP_TITLE . "</h1>";

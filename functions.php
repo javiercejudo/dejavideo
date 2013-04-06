@@ -237,7 +237,7 @@ function display_current_location($dir) {
 	foreach ($tokens as $token) {
 		$path_trail .= $token[1];
 		$dir_active = ($i !== $num_tokens) ? '' : ' dir_active';
-		$current_location .= "<a class='dir$dir_active' href='?v=" . rawurlencode($path_trail) . "'>" . $token[0];
+		$current_location .= "<a class='dir$dir_active' href='?d=" . rawurlencode($path_trail) . "'>" . $token[0];
 		if (DISPLAY_FILE_COUNT) {
 			$current_location .= " <span class='file_count'>(" . count_files($path_trail, REAL_FILE_COUNT) . ")</span>";
 		}
@@ -408,7 +408,7 @@ function list_files($files, $dir, $video, $list_directory, $level) {
 				if (!ONLY_FOLDERS_WITH_ACCEPTED_FILES || contains_supported_mime_types($new_dir)) {
 					echo "<li>";
 					echo "<p>";
-					echo "<a class='dir' href='?v=" . rawurlencode($new_dir) . "'>";
+					echo "<a class='dir' href='?d=" . rawurlencode($new_dir) . "'>";
 					echo get_display_name($filename);
 					if (DISPLAY_FILE_COUNT) {
 						echo " <span class='file_count'>(" . count_files($new_dir, REAL_FILE_COUNT) . ")</span>";
