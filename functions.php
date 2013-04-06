@@ -214,7 +214,7 @@ function max_str_length (
 
 function tokenize_current_location ($dir) {
 
-	$home_key = array('Home');
+	$home_key = array(HOME_NAME);
 	$home_val = array(DATA);
 
 	$dir_without_home = substr($dir, strlen(DATA) + 1);
@@ -262,7 +262,7 @@ function get_page_title($video, $dir) {
 			echo substr($title, 0, -1);
 			echo '"';
 		} else {
-			echo get_display_name($dir);
+			echo HOME_NAME;
 		}
 	}
 }
