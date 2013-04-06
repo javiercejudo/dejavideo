@@ -213,37 +213,40 @@ function max_str_length(
 }
 
 function tokenize_current_location($dir) {
-
-	$home_key = array(HOME_NAME);
-	$home_val = array(DATA);
+	$tokens = array();
+	$tokens[] = array(HOME_NAME, DATA);
 
 	$dir_without_home = substr($dir, strlen(DATA) + 1);
 
 	$rest_vals = array_filter(explode(DS, $dir_without_home));
 	$rest_keys = array_map('get_display_name', $rest_vals);
 
-	$keys = array_merge($home_key, $rest_keys);
-	$vals = array_merge($home_val, $rest_vals);
+	for ($i = 0, $i_max = count($rest_vals); $i < $i_max; $i++) {
+		$tokens[] = array($rest_keys[$i], $rest_vals[$i]);
+	}
 
-	return array_combine($keys, $vals);
+	return $tokens;
 }
 
 function display_current_location($dir) {
 	$path_trail = '';
 	$current_location = '';
 	$tokens = tokenize_current_location($dir);
-	foreach ($tokens as $display_token => $token) {
-		$path_trail .= $token;
-		$dir_active = ($token !== end($tokens)) ? '' : ' dir_active';
-		$current_location .= "<a class='dir$dir_active' href='?v=" . rawurlencode($path_trail) . "'>" . $display_token;
+	$num_tokens = count($tokens);
+	$i = 1;
+	foreach ($tokens as $token) {
+		$path_trail .= $token[1];
+		$dir_active = ($i !== $num_tokens) ? '' : ' dir_active';
+		$current_location .= "<a class='dir$dir_active' href='?v=" . rawurlencode($path_trail) . "'>" . $token[0];
 		if (DISPLAY_FILE_COUNT) {
 			$current_location .= " <span class='file_count'>(" . count_files($path_trail, REAL_FILE_COUNT) . ")</span>";
 		}
 		$current_location .= "</a>";
-		if ($token !== end($tokens)) {
+		if ($i !== $num_tokens) {
 			$current_location .= ' <span class="sep">' . SDS . '</span> ';
 			$path_trail .= DS;
 		}
+		$i++;
 	}
 	return $current_location;
 }
@@ -256,8 +259,8 @@ function get_page_title($video, $dir) {
 			$tokens = tokenize_current_location($dir);
 			echo '"';
 			$title = '';
-			foreach ($tokens as $display_token => $token) {
-				$title .= $display_token . SDS;
+			foreach ($tokens as $token) {
+				$title .= $token[0] . SDS;
 			}
 			echo substr($title, 0, -1);
 			echo '"';
