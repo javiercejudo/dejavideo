@@ -379,7 +379,7 @@ function list_files($files, $dir, $video, $list_directory, $level) {
 					$is_current = ($new_dir === $video) ? ' current' : '';
 					echo "<li>";
 					echo "<p class='file'>";
-					echo "<a href='$new_dir'>" . DOWNLOAD_ICON . "</a> ";
+					echo "<a href='" . rawurlencode($new_dir) . "'>" . DOWNLOAD_ICON . "</a> ";
 					echo "<a class='$is_current' href='?v=" . rawurlencode($new_dir) . "&amp;d=" . rawurlencode($GLOBALS['dir']) . "' title='" . $filename . "'>";
 					echo get_display_name($filename);
 					echo "</a>";
@@ -392,7 +392,7 @@ function list_files($files, $dir, $video, $list_directory, $level) {
 					if (!ONLY_ACCEPTED_FILES) {
 						echo "<li>";
 						echo "<p class='file unsupported' title='" . $filename . "'>";
-						echo "<a href='$new_dir'>" . DOWNLOAD_ICON . "</a> ";
+						echo "<a href='" . rawurlencode($new_dir) . "'>" . DOWNLOAD_ICON . "</a> ";
 						echo get_display_name($filename);
 						echo " (" . get_mime_type($new_dir) . ")";
 						// echo " unsupported";
