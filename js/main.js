@@ -32,6 +32,7 @@ $(document).ready(function(){
 				|| mimeType === "video/mp4"  && !Modernizr.video.h264
 				|| mimeType === "video/webm" && !Modernizr.video.webm
 				|| mimeType === "application/ogg"  && !Modernizr.video.ogg
+				|| (mimeType !== "video/mp4" && mimeType !== "video/webm" && mimeType !== "application/ogg")
 			) {
 				$(this).addClass('unsupported');
 				$(this).find('.title-link').attr('href', 'javascript:;');
