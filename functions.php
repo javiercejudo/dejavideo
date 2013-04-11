@@ -154,7 +154,7 @@ function get_recent_files($path = DATA, $amount = MAX_AMOUNT_RECENT_FILES, $sync
 		$pathname = $file->getPathname();
 		if (
 			is_file($pathname) 
-			&& accepted_mime_type(get_mime_type($pathname)) 
+			&& (accepted_mime_type(get_mime_type($pathname)) || !ONLY_ACCEPTED_FILES)
 			&& substr($file->getFilename(), 0, 1) != "." 
 			&& !preg_match('/\.part$/i', $file->getFilename())
 			&& time() - filemtime($pathname) > SECONDS_OLD_BEFORE_SHOWING
@@ -166,7 +166,10 @@ function get_recent_files($path = DATA, $amount = MAX_AMOUNT_RECENT_FILES, $sync
 			}
 		}
 		$is_dir_fn = $sync ? 'is_safe_dir' : 'is_safe_dir_ajax';
-		if ($is_dir_fn($pathname) && !$file->isDot()) {
+		if (
+			$is_dir_fn($pathname) && !$file->isDot()
+			&& (contains_supported_mime_types($pathname) || !ONLY_FOLDERS_WITH_ACCEPTED_FILES)
+		) {
 			$rec_recent_files = get_recent_files($pathname, $amount, $sync);
 			foreach ($rec_recent_files as $pathname => $file_md) {
 				if ($aux = add_recent_file($pathname, $file_md, $max_date, $recent_files, $amount)) {
@@ -183,9 +186,10 @@ function print_recent_files($recent_files, $dir, $ajax = false) {
 	$print = '';
 	foreach ($recent_files as $path_to_file => $file_md) {
 		$original_path_to_file = $path_to_file;
+		$mime_type = get_mime_type($original_path_to_file);
 		if ($ajax) $path_to_file = substr($path_to_file, strpos($path_to_file, DATA));
 		$filename = get_display_name(get_filename($path_to_file));
-		$print .= "<li class='item_recent replaceable'><a href='?v=";
+		$print .= "<li class='item_recent replaceable file_recent' data-mime-type='" . $mime_type . "'><a class='title-link' href='?v=";
 		$print .= rawurlencode($path_to_file);
 		$print .= "&amp;d=";
 		$print .= $dir;
@@ -326,12 +330,14 @@ function count_files($path, $count_files = false) {
 
 function scandir_grouped($dir, $sorting_order = SCANDIR_SORT_ASCENDING) {
 	$files = scandir($dir); // future: scandir($dir, $sorting_order);
+	if (SORTING === 'm') return $files;
+
 	$no_dirs = $dirs = array();
     foreach ($files as $filename) {
 		if (!is_dir($dir . DS . $filename)) $no_dirs[] = $filename;
 		else $dirs[] = $filename;
     }
-    return array_merge($no_dirs, $dirs);
+    return (SORTING === 'df') ? array_merge($dirs, $no_dirs) : array_merge($no_dirs, $dirs);
 }
 
 function contains_supported_mime_types($dir) {
@@ -371,16 +377,17 @@ function list_files($files, $dir, $video, $list_directory, $level) {
 	foreach ($files as $filename) {
 		if ($filename != "." && $filename != ".." && substr($filename, 0, 1) != ".") {
 			$new_dir = $dir . DS . $filename;
+			$mime_type = get_mime_type($new_dir);
 			if (!is_dir($new_dir)) {
 				if (
-					accepted_mime_type(get_mime_type($new_dir)) 
+					accepted_mime_type($mime_type) 
 					&& time() - @filemtime($new_dir) > SECONDS_OLD_BEFORE_SHOWING
 				) {
 					$is_current = ($new_dir === $video) ? ' current' : '';
 					echo "<li>";
-					echo "<p class='file'>";
+					echo "<p class='file' data-mime-type='" . $mime_type . "'>";
 					echo "<a href='$new_dir'>" . DOWNLOAD_ICON . "</a> ";
-					echo "<a class='$is_current' href='?v=" . rawurlencode($new_dir) . "&amp;d=" . rawurlencode($GLOBALS['dir']) . "' title='" . $filename . "'>";
+					echo "<a class='$is_current title-link' href='?v=" . rawurlencode($new_dir) . "&amp;d=" . rawurlencode($GLOBALS['dir']) . "' title='" . $filename . "'>";
 					echo get_display_name($filename);
 					echo "</a>";
 					if (DISPLAY_FILE_DETAILS) {
@@ -395,7 +402,6 @@ function list_files($files, $dir, $video, $list_directory, $level) {
 						echo "<a href='$new_dir'>" . DOWNLOAD_ICON . "</a> ";
 						echo get_display_name($filename);
 						echo " (" . get_mime_type($new_dir) . ")";
-						// echo " unsupported";
 						if (DISPLAY_FILE_DETAILS) {
 							display_details($new_dir);
 						}

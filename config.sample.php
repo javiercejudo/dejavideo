@@ -30,16 +30,18 @@ $ARRAY_MIME_TYPES_CODECS = array(
 	'application/ogg' => 'theora, vorbis',
 
 	// The following would need plugins in any browser
-	'video/mpeg'      => '',
-	'video/x-msvideo' => '',
-	'video/x-matroska'=> '',
-	'application/octet-stream'=> ''
+	// 'video/mpeg'      => '',
+	// 'video/x-msvideo' => '',
+	// 'video/x-matroska'=> '',
+	// 'application/octet-stream'=> ''
 );
 
 define('HIDE_LIST_WHEN_VIDEO_SELECTED', true);                           // default: true
 define('ONLY_ACCEPTED_FILES', true);                                     // default: true
 define('ONLY_FOLDERS_WITH_ACCEPTED_FILES', true && ONLY_ACCEPTED_FILES); // default: true && ONLY_ACCEPTED_FILES
 define('DISPLAY_NAMES', true);                                           // default: true
+
+define('SORTING', 'fd'); // default: df; fd={files then dirs}, df={dirs then files}
 
 $ARRAY_DISPLAY_NAMES = array(
 	// pattern => replacement

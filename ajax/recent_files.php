@@ -3,6 +3,7 @@ require '../config.php';
 require '../functions.php';
 
 $path = $_GET['path'];
+$GLOBALS['found'] = 0;
 $recent_files = get_recent_files(ROOT . DS . $path, MAX_AMOUNT_RECENT_FILES, false);
 if (substr($path, 0, strlen(DATA)) == DATA) {
 	echo print_recent_files($recent_files, $path, true);

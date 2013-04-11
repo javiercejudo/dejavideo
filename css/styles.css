@@ -159,8 +159,8 @@ video {
 	font-size: small;
 }
 
-.unsupported {
-	text-decoration: none;
+.unsupported a {
+	text-decoration: line-through;
 	color: #666;
 }
 
