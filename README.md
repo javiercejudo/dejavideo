@@ -1,6 +1,6 @@
 # DejaVideo
 
-Requires PHP 5.3
+Tested in PHP 5.3
 
 Check the demo page at [dejavideo.javiercejudo.com](http://dejavideo.javiercejudo.com/).
 
