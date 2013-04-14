@@ -27,7 +27,6 @@ $(document).ready(function(){
 	function checkSupportedVideosLinks (linkType) {
 		$('.' + linkType).each(function(i) {
 			var mimeType = $(this).data('mimeType');
-			console.log(mimeType);
 			if (!Modernizr.video
 				|| mimeType === "video/mp4"  && !Modernizr.video.h264
 				|| mimeType === "video/webm" && !Modernizr.video.webm
