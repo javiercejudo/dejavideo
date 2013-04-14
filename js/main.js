@@ -35,7 +35,7 @@ $(document).ready(function(){
 				|| (mimeType !== "video/mp4" && mimeType !== "video/webm" && mimeType !== "application/ogg")
 			) {
 				$(this).addClass('unsupported');
-				$(this).find('.title-link').attr('href', 'javascript:;');
+				$(this).find('.title-link').attr('href', 'javascript:;').css('cursor', 'text');
 			}
 		});
 	}
