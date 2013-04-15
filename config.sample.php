@@ -32,8 +32,7 @@ $ARRAY_MIME_TYPES_CODECS = array(
 	// The following would need plugins in any browser
 	// 'video/mpeg'      => '',
 	// 'video/x-msvideo' => '',
-	// 'video/x-matroska'=> '',
-	// 'application/octet-stream'=> ''
+	// 'video/x-matroska'=> ''
 );
 
 define('HIDE_LIST_WHEN_VIDEO_SELECTED', true);                           // default: true
