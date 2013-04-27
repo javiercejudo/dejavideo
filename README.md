@@ -28,6 +28,7 @@ directory or in a subfolder `subs/`).
 screens thanks to [Hammer.js](http://eightmedia.github.com/hammer.js/)), 
 autohide for control bar…
 - Recent files bar that scrolls horizontally by dragging it.
+- Ability to delete files.
 - Custom start time by adding a number of seconds after the hash (ie. `url#60`
 would make the video start at minute 1). The URL gets periodical 
 updates so you can keep the link and start where you left off.
