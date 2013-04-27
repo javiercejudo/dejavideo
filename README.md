@@ -23,6 +23,7 @@ directory or in a subfolder `subs/`).
 
 ### Added features that require JavaScript:
 - Support for [Videojs](http://videojs.com/).
+- Video support detection. Unsopported files in the current browser are marked and links to the video are disabled.
 - Added controls for video playback.
 - Intuitive additions to Video.js: full screen on double click (or pinch on touch 
 screens thanks to [Hammer.js](http://eightmedia.github.com/hammer.js/)), 
