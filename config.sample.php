@@ -35,6 +35,7 @@ $ARRAY_MIME_TYPES_CODECS = array(
 	// 'video/x-matroska'=> ''
 );
 
+define('CAN_DELETE_FILES', false);                                       // default: false
 define('HIDE_LIST_WHEN_VIDEO_SELECTED', true);                           // default: true
 define('ONLY_ACCEPTED_FILES', true);                                     // default: true
 define('ONLY_FOLDERS_WITH_ACCEPTED_FILES', true && ONLY_ACCEPTED_FILES); // default: true && ONLY_ACCEPTED_FILES

@@ -79,10 +79,10 @@ $(document).ready(function(){
 			}).done(function( result ) {
 				setTimeout(function(){
 					if ($('#loading_tag').length) {
-						$('#loading_tag').remove();	
+						$('#loading_tag').remove();
 					}
 					if ($('.replaceable').length) {
-						$('.replaceable').remove();	
+						$('.replaceable').remove();
 					}
 					$('#recent_tag').after(result);
 					checkSupportedVideosLinks('file_recent');
@@ -408,8 +408,52 @@ $(document).ready(function(){
 	// }
 
 	$('.current_container').on('mouseup', function (ev){
-		if ($(this).has(ev.target).length === 0){
+		if ($(this).has(ev.target).length === 0) {
 			$("html, body").animate({ scrollTop: "0" });
 		}
+	});
+
+	if (!Modernizr.touch) {
+		// delegation, just checking it out
+		$('#listing').on("mouseenter", ".deletable", function () {
+			$(this).find('.delete-icon').removeClass('invisible').addClass('visible');
+		});
+		$('#listing').on("mouseleave", ".deletable", function () {
+			$(this).find('.delete-icon').removeClass('visible').addClass('invisible');
+		});
+	} else {
+		$('.delete-icon').addClass('visible');
+	}
+
+	$('.delete-icon').on('click', function (e) {
+		e.preventDefault();
+		$this = $(this);
+		var title = $this.closest('.deletable').find('.title-link').text();
+		
+		if (!confirm('Are you sure you want to delete "' + title + '"?')) {
+			return;
+		}
+
+		$.ajax({
+			type: "POST",
+			url: "ajax/delete_file.php",
+			data: { path: $(this).data('file') }
+		}).done(function( result ) {
+			if (result == 1) {
+				update_recent();
+				$li = $this.closest('li');
+				$liParent = $li.parents('li:first');
+				$li.remove();
+				if(!$liParent.find('li').length) {
+					$liParent.remove();
+				}
+			} else {
+				alert('The file could not be deleted.');
+			}
+		});
+	});
+
+	$(window).on('beforeunload', function () {
+		$('#listing').css('opacity', '0.4');
 	});
 });

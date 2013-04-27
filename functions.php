@@ -83,6 +83,8 @@ function get_mime_type($file) {
 	finfo_close($finfo);
 	if ($mime_type === 'application/octet-stream' && get_extension($file) === 'webm') {
 		return 'video/webm'; // solves problems with some webm files
+	} else if ($mime_type === 'application/octet-stream' && get_extension($file) === 'mkv') {
+		return 'video/x-matroska'; // solves problems with some mkv files
 	}
 	if ($mime_type !== false) {
 		return $mime_type;
@@ -241,7 +243,8 @@ function display_current_location($dir) {
 	foreach ($tokens as $token) {
 		$path_trail .= $token[1];
 		$dir_active = ($i !== $num_tokens) ? '' : ' dir_active';
-		$current_location .= "<a class='dir$dir_active' href='?d=" . rawurlencode($path_trail) . "'>" . $token[0];
+		$link = '?d=' . rawurlencode($path_trail);
+		$current_location .= "<a class='dir$dir_active' href='/" . $link . "'>" . $token[0];
 		if (DISPLAY_FILE_COUNT) {
 			$current_location .= " <span class='file_count'>(" . count_files($path_trail, REAL_FILE_COUNT) . ")</span>";
 		}
@@ -278,8 +281,10 @@ function get_display_name($filename) {
 	if (!DISPLAY_NAMES) return $filename;
 	foreach ($GLOBALS["ARRAY_DISPLAY_NAMES"] as $pattern => $replacement) {
 		$display_name = preg_replace($pattern, $replacement, $filename);
-		if (strcmp($filename, $display_name) !== 0) {			
-			return ucwords(strtolower(trim(preg_replace('/[\._]|[\ ]{2,}/', ' ', $display_name))));
+		if (strcmp($filename, $display_name) !== 0) {
+			$stripped_separators = preg_replace('/[\._]/', ' ', $display_name);	
+			$stripped_double_spaces = preg_replace('/[\ ]{2,}/', ' ', $stripped_separators);
+			return ucwords(strtolower(trim($stripped_double_spaces)));
 		}
 	}
 	return ucwords(strtolower(trim($filename)));
@@ -311,17 +316,17 @@ function count_files($path, $count_files = false) {
 	$n = 0;
 	foreach ($dir as $file) {
 		if (
-			is_file($path.DS.$file) 
-			&& (accepted_mime_type(get_mime_type($path.DS.$file)) 
+			is_file($path . DS . $file) 
+			&& (accepted_mime_type(get_mime_type($path . DS . $file)) 
 			|| !ONLY_ACCEPTED_FILES) && substr($file, 0, 1) != "."
 		) {
 			$n++;
 		}
-		if (is_safe_dir($path.DS.$file) && !$file->isDot()) {
+		if (is_safe_dir($path . DS . $file) && !$file->isDot()) {
 			$GLOBALS['found'] = 0;
-			if (contains_supported_mime_types($path.DS.$file) || !ONLY_FOLDERS_WITH_ACCEPTED_FILES) {
+			if (contains_supported_mime_types($path . DS . $file) || !ONLY_FOLDERS_WITH_ACCEPTED_FILES) {
 				if (!$count_files) $n++;
-				else $n += count_files($path.DS.$file, true);
+				else $n += count_files($path . DS . $file, true);
 			}
 		}
 	}
@@ -362,6 +367,10 @@ function contains_supported_mime_types($dir) {
 	return $GLOBALS['found'];
 }
 
+function delete_file ($path) {
+	return unlink(ROOT . DS . $path);
+}
+
 function list_files($files, $dir, $video, $list_directory, $level) {
 	if (DEPTH > -1 && $level > DEPTH) return 0;
 	if ($level === 1) {
@@ -379,32 +388,45 @@ function list_files($files, $dir, $video, $list_directory, $level) {
 			$new_dir = $dir . DS . $filename;
 			$mime_type = get_mime_type($new_dir);
 			if (!is_dir($new_dir)) {
+				$is_current = ($new_dir === $video) ? ' current' : '';
 				if (
 					accepted_mime_type($mime_type) 
 					&& time() - @filemtime($new_dir) > SECONDS_OLD_BEFORE_SHOWING
 				) {
-					$is_current = ($new_dir === $video) ? ' current' : '';
-					echo "<li>";
+					echo "<li class='deletable'>";
 					echo "<p class='file' data-mime-type='" . $mime_type . "'>";
 					echo "<a href='$new_dir'>" . DOWNLOAD_ICON . "</a> ";
 					echo "<a class='$is_current title-link' href='?v=" . rawurlencode($new_dir) . "&amp;d=" . rawurlencode($GLOBALS['dir']) . "' title='" . $filename . "'>";
 					echo get_display_name($filename);
 					echo "</a>";
+
 					if (DISPLAY_FILE_DETAILS) {
 						display_details($new_dir);
 					}
+					
 					echo "</p>";
+					
+					if (CAN_DELETE_FILES && $level === 2) {
+						echo '<div class="delete-icon invisible" title="Delete" data-file="' . $new_dir . '">';
+						echo '<a href="#">×<span class="delete-text">Delete</span></a>';
+						echo '</div>';
+					}
+
 					echo "</li>";
 				} else {
 					if (!ONLY_ACCEPTED_FILES) {
 						echo "<li>";
-						echo "<p class='file unsupported' title='" . $filename . "'>";
-						echo "<a href='" . rawurlencode($new_dir) . "'>" . DOWNLOAD_ICON . "</a> ";
+						echo "<p class='file' data-mime-type='" . $mime_type . "'>";
+						echo "<a href='$new_dir'>" . DOWNLOAD_ICON . "</a> ";
+						echo "<a class='$is_current title-link' href='?v=" . rawurlencode($new_dir) . "&amp;d=" . rawurlencode($GLOBALS['dir']) . "' title='" . $filename . "'>";
 						echo get_display_name($filename);
 						echo " (" . get_mime_type($new_dir) . ")";
+						echo "</a>";
+
 						if (DISPLAY_FILE_DETAILS) {
 							display_details($new_dir);
 						}
+						
 						echo "</p>";
 						echo "</li>";
 					}
