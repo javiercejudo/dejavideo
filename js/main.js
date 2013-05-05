@@ -139,7 +139,9 @@ $(document).ready(function(){
 	$('#recent_tag').on('click', function (e) {
 		e.preventDefault();
 		$('.replaceable').remove();
-		$(this).after('<li class="item_recent" id="loading_tag">Loading…</li>');
+		if (!$('#loading_tag').length) {
+			$(this).after('<li class="item_recent" id="loading_tag">Loading…</li>');
+		}
 		update_recent(false);
 	});
 
