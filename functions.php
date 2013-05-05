@@ -244,7 +244,7 @@ function display_current_location($dir) {
 		$path_trail .= $token[1];
 		$dir_active = ($i !== $num_tokens) ? '' : ' dir_active';
 		$link = '?d=' . rawurlencode($path_trail);
-		$current_location .= "<a class='dir$dir_active' href='/" . $link . "'>" . $token[0];
+		$current_location .= "<a class='dir$dir_active' href='" . $link . "'>" . $token[0];
 		if (DISPLAY_FILE_COUNT) {
 			$current_location .= " <span class='file_count'>(" . count_files($path_trail, REAL_FILE_COUNT) . ")</span>";
 		}
@@ -375,7 +375,7 @@ function list_files($files, $dir, $video, $list_directory, $level) {
 	if (DEPTH > -1 && $level > DEPTH) return 0;
 	if ($level === 1) {
 		echo '<div id="top_recent_wrapper" class="tr_placeholder standard_box" style="display: none;">';
-		echo '<ol id="top_recent" class="top_recent" id="tr_placeholder"><li class="item_recent" id="recent_tag">Recent:</li><li class="item_recent" id="loading_tag">Loading…</li></ol>';
+		echo '<ol id="top_recent" class="top_recent" id="tr_placeholder"><li class="item_recent" id="recent_tag"><a href="#">Recent</a>:</li><li class="item_recent" id="loading_tag">Loading…</li></ol>';
 		echo '</div>';
 		echo '<script>';
 		echo 'document.getElementById("listing").style.opacity = ".4";';

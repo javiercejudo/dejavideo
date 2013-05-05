@@ -134,7 +134,14 @@ $(document).ready(function(){
 	}
 
 	update_recent(true);
-	setInterval(update_recent, 60000);
+	setInterval(update_recent, 30000);
+
+	$('#recent_tag').on('click', function (e) {
+		e.preventDefault();
+		$('.replaceable').remove();
+		$(this).after('<li class="item_recent" id="loading_tag">Loading…</li>');
+		update_recent(false);
+	});
 
 	$(window).on('resize', function(){
 		if ($('.novideo').length && $('.listing_container').length) {
@@ -440,7 +447,7 @@ $(document).ready(function(){
 			data: { path: $(this).data('file') }
 		}).done(function( result ) {
 			if (result == 1) {
-				update_recent();
+				update_recent(false);
 				$li = $this.closest('li');
 				$liParent = $li.parents('li:first');
 				$li.remove();
