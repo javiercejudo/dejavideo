@@ -34,7 +34,7 @@ autohide for control bar…
 would make the video start at minute 1). The URL gets periodical 
 updates so you can keep the link and start where you left off.
 
-## Video support: <sup>*</sup>
+## Video support <sup>*</sup>
 
 - Theora (usually with `.ogv` or `.ogg` filename extensions)
 - H.264, (`.mp4`, `.mkv`, `.3gp`)
@@ -43,7 +43,7 @@ updates so you can keep the link and start where you left off.
 \* Actual support depends on the browser of choice. Learn more at
     [http://diveintohtml5.info/video.html#what-works](http://diveintohtml5.info/video.html#what-works).
 
-## How to install:
+## How to install
 
 Copy the application on a folder on your web root and put your videos 
 inside the `data/` folder (alternatively, you can create a symlink to any
