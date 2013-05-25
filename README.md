@@ -9,7 +9,7 @@ world using HTML5 video. I use the app to share all my videos from my main
 device to any devices in the house connected to the Wi-Fi, including tablets 
 and smartphones. Fully functional without JavaScript and Flash.
 
-## Features:
+## Features
 
 ### JavaScript independent features:
 
