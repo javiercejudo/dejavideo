@@ -1,4 +1,4 @@
-# DejaVideo
+# dejavideo
 
 Tested in PHP 5.3
 
