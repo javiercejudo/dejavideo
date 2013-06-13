@@ -368,7 +368,23 @@ function contains_supported_mime_types($dir) {
 }
 
 function delete_file ($path) {
-	return unlink(ROOT . DS . $path);
+	$result = array();
+	
+	try {
+		$unlink = @unlink(ROOT . DS . $path);
+		if ($unlink) {
+			$result['success'] = true;
+			return $result;
+		} else {
+			$result['success'] = false;
+			$result['problem'] = "Permission denied.";
+			return $result;
+		}
+	} catch (Exception $e) {
+		$result['success'] = false;
+		$result['problem'] = $e->getMessage();
+		return $result;
+	}
 }
 
 function list_files($files, $dir, $video, $list_directory, $level) {

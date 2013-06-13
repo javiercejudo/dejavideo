@@ -2,10 +2,14 @@
 require '../config.php';
 require '../functions.php';
 
-$path = $_POST['path'];
+$path = $_GET['path'];
 
-if (substr($path, 0, strlen(DATA)) == DATA && delete_file($path)) {
-	echo 1;
-	exit;
+if (substr($path, 0, strlen(DATA)) == DATA) {
+	echo json_encode(delete_file($path));
+	return;
 }
-echo 0;
+
+$result = array();
+$result['success'] = false;
+
+echo json_encode($result);

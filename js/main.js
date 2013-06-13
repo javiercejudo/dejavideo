@@ -1,3 +1,4 @@
+
 $(document).ready(function(){
 	// $.timeago.settings.strings = {
 	//   prefixAgo: null,
@@ -444,11 +445,13 @@ $(document).ready(function(){
 		}
 
 		$.ajax({
-			type: "POST",
+			type: "GET",
 			url: "ajax/delete_file.php",
+			dataType: "json",
 			data: { path: $(this).data('file') }
-		}).done(function( result ) {
-			if (result == 1) {
+		}).done(function(result) {
+			console.log(result);
+			if (result.success) {
 				update_recent(false);
 				$li = $this.closest('li');
 				$liParent = $li.parents('li:first');
@@ -457,7 +460,7 @@ $(document).ready(function(){
 					$liParent.remove();
 				}
 			} else {
-				alert('The file could not be deleted.');
+				alert('The file could not be deleted: ' + result.problem);
 			}
 		});
 	});
