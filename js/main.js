@@ -445,7 +445,7 @@ $(document).ready(function(){
 		}
 
 		$.ajax({
-			type: "GET",
+			type: "POST",
 			url: "ajax/delete_file.php",
 			dataType: "json",
 			data: { path: $(this).data('file') }

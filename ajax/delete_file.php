@@ -2,7 +2,7 @@
 require '../config.php';
 require '../functions.php';
 
-$path = $_GET['path'];
+$path = $_POST['path'];
 
 if (substr($path, 0, strlen(DATA)) == DATA) {
 	echo json_encode(delete_file($path));
