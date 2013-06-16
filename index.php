@@ -16,6 +16,7 @@ require 'initialize.php';
 	<link href="vendor/css/normalize-2.0.1<?= OPTIMISED_SUFFIX ?>.css" rel="stylesheet">
 	<?php if (VIDEOJS && $video) echo '<link href="vendor/css/video-3.2.0.min.css" rel="stylesheet">'; ?>
 	<link href="css/styles<?= OPTIMISED_SUFFIX ?>.css" rel="stylesheet">
+	<script src="vendor/js/modernizr.custom-2.6.2.min.js"></script>
 </head>
 <body>
 	<div class="display_container">
@@ -40,7 +41,6 @@ if ($list) {
 if (VIDEOJS && $video) echo '<script src="vendor/js/video-3.2.0.min.js"></script>';
 // if (DISPLAY_FILE_DETAILS) echo '<script src="vendor/js/jquery.timeago-0.11.4.js"></script>'; 
 ?>
-<script src="vendor/js/modernizr.custom-2.6.2.min.js"></script>
 <script src="vendor/js/hammer-0.6.3<?= OPTIMISED_SUFFIX ?>.js"></script>
 <script src="vendor/js/jquery.timeago-0.11.4<?= OPTIMISED_SUFFIX ?>.js"></script>
 <script src="js/main<?= OPTIMISED_SUFFIX ?>.js"></script>
