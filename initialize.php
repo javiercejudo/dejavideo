@@ -6,6 +6,7 @@ $n_video = 'none';
 $v_type  = '';
 $v_codec = '';
 $dir     = DATA;
+$is_home = false;
 $list    = true;
 $GLOBALS['found'] = 0;
 
@@ -28,6 +29,10 @@ if (
 	isset($_GET['d']) 
 	&& !empty($_GET['d']) && is_safe_dir($_GET['d'])
 	&& contains_supported_mime_types($_GET['d'])
+	&& substr($_GET['d'], 0, strlen(DATA)) == DATA
 ) {
 	$dir = $_GET['d'];
+}
+if ($dir === DATA) {
+	$is_home = true;
 }

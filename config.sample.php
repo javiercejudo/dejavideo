@@ -14,6 +14,7 @@ define('DEFAULT_POSTER', 'img/dejavideo.png');          // default: 'img/dejavid
 define('DS', DIRECTORY_SEPARATOR);                      // default: DIRECTORY_SEPARATOR
 define('SDS', DS);                                      // default: DS
 define('DEPTH', 2);                                     // default: 2; set DEPTH to (-1) for infinite depth
+define('DEPTH_FIRST_LEVEL', 2);                         // default: 2; same as DEPTH but for the front page only
 define('DISPLAY_FILE_COUNT', false);                    // default: false
 define('REAL_FILE_COUNT', DISPLAY_FILE_COUNT && false); // default: DISPLAY_FILE_COUNT && false
 define('DISPLAY_FILE_DETAILS', true);                   // default: true
@@ -29,7 +30,7 @@ $ARRAY_MIME_TYPES_CODECS = array(
 	'video/ogg'       => 'theora, vorbis',
 	'application/ogg' => 'theora, vorbis',
 
-	// The following would need plugins in any browser
+	// The following would need plugins in all major browsers
 	// 'video/mpeg'      => '',
 	// 'video/x-msvideo' => '',
 	// 'video/x-matroska'=> ''

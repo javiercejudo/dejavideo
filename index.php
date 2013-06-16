@@ -25,7 +25,7 @@ require 'initialize.php';
 if ($list) {
 	echo "<input id='current_dir' type='hidden' value='" . $dir . "'>";
 	echo "<div id='listing' class='listing_container'>";
-	list_directory($dir, $video, 1);
+	list_directory($dir, $video, 1, $is_home);
 	$time_end = microtime(true);
 	$execution_time = $time_end - $time_start;
 	echo "<p class='footer standard_box'>© Javier Cejudo " . date('Y') . ".";

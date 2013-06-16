@@ -387,8 +387,13 @@ function delete_file ($path) {
 	}
 }
 
-function list_files($files, $dir, $video, $list_directory, $level) {
-	if (DEPTH > -1 && $level > DEPTH) return 0;
+function list_files($files, $dir, $video, $list_directory, $level, $is_home = false) {
+	if (DEPTH > -1 && $level > DEPTH) {
+		return 0;
+	}
+	if ($is_home && DEPTH_FIRST_LEVEL > -1 && $level > DEPTH_FIRST_LEVEL) {
+		return 0;
+	}
 	if ($level === 1) {
 		echo '<div id="top_recent_wrapper" class="tr_placeholder standard_box" style="display: none;">';
 		echo '<ol id="top_recent" class="top_recent" id="tr_placeholder"><li class="item_recent" id="recent_tag"><a href="#">Recent</a>:</li><li class="item_recent" id="loading_tag">Loading…</li></ol>';
@@ -459,7 +464,7 @@ function list_files($files, $dir, $video, $list_directory, $level) {
 					}
 					echo "</a>";
 					echo "</p>";
-					$list_directory($new_dir, $video, $level + 1);
+					$list_directory($new_dir, $video, $level + 1, $is_home);
 					echo "</li>";
 				}
 			}
@@ -468,8 +473,8 @@ function list_files($files, $dir, $video, $list_directory, $level) {
 	echo "</ul>";
 }
 
-function list_directory($dir, $video, $level) {
+function list_directory($dir, $video, $level, $is_home = false) {
 	if ($files = scandir_grouped($dir, SCANDIR_SORT_ASCENDING)) {
-		list_files($files, $dir, $video, __FUNCTION__, $level);
+		list_files($files, $dir, $video, __FUNCTION__, $level, $is_home);
 	} else return false;
 }
