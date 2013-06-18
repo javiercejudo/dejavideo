@@ -2,7 +2,7 @@
 if ($video) {	
 	$video_js = VIDEOJS ? ' video-js vjs-default-skin' : '';
 	$poster = get_poster($video);
-	echo "<video id='main_video' class='display display_video$video_js' controls";
+	echo "<video id='main_video' class='display display_video$video_js' controls autoplay ";
 	if ($poster) {
 		echo " poster='" . $poster . "' ";
 	}
