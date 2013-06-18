@@ -1,8 +1,9 @@
 <?php 
 if ($video) {	
 	$video_js = VIDEOJS ? ' video-js vjs-default-skin' : '';
-	echo "<video id='main_video' class='display display_video$video_js' controls autoplay='autoplay'";
-	if ($poster = get_poster($video)) {
+	$poster = get_poster($video);
+	echo "<video id='main_video' class='display display_video$video_js' controls";
+	if ($poster) {
 		echo " poster='" . $poster . "' ";
 	}
 	echo "data-setup='{}'>";

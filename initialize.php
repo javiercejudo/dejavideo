@@ -27,9 +27,10 @@ if (isset($_GET['v']) && !empty($_GET['v'])) {
 }
 if (
 	isset($_GET['d']) 
+	&& $_GET['d'] !== DATA
+	&& substr($_GET['d'], 0, strlen(DATA)) === DATA
 	&& !empty($_GET['d']) && is_safe_dir($_GET['d'])
 	&& contains_supported_mime_types($_GET['d'])
-	&& substr($_GET['d'], 0, strlen(DATA)) == DATA
 ) {
 	$dir = $_GET['d'];
 }

@@ -124,6 +124,9 @@ function get_subtitles($video) {
 }
 
 function get_poster($video) {
+	return false;
+
+	// does not look good at the moment
 	$info = pathinfo($video);
 	$poster = $info['dirname'] . DIRECTORY_SEPARATOR . 'posters' .  DIRECTORY_SEPARATOR . $info['filename'] . '.jpg';
 	if (is_file($poster)) return $poster;
@@ -131,7 +134,7 @@ function get_poster($video) {
 	if (is_file($poster)) return $poster;
 	$poster = POSTERS . DIRECTORY_SEPARATOR . $info['filename'] . '.jpg';
 	if (is_file($poster)) return $poster;
-	// if (is_file(DEFAULT_POSTER)) return DEFAULT_POSTER;
+	if (is_file(DEFAULT_POSTER)) return DEFAULT_POSTER;
 	return false;
 }
 
@@ -152,6 +155,7 @@ function get_recent_files($path = DATA, $amount = MAX_AMOUNT_RECENT_FILES, $sync
 	$dir = new DirectoryIterator($path);
 	$recent_files = array();
 	$max_date = 0;
+	$GLOBALS['found'] = 0;
 	foreach ($dir as $file) {
 		$pathname = $file->getPathname();
 		if (
@@ -194,7 +198,7 @@ function print_recent_files($recent_files, $dir, $ajax = false) {
 		$print .= "<li class='item_recent replaceable file_recent' data-mime-type='" . $mime_type . "'><a class='title-link' href='?v=";
 		$print .= rawurlencode($path_to_file);
 		$print .= "&amp;d=";
-		$print .= $dir;
+		$print .= rawurlencode($dir);
 		$print .= "' title='";
 		$print .= $filename;
 		$print .= "&#10;⌚ ";
