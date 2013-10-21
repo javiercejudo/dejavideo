@@ -358,6 +358,7 @@ function contains_supported_mime_types($dir) {
 			if (!is_dir($path_to_file)) {
 				if (
 					(accepted_mime_type(get_mime_type($path_to_file)) || !ONLY_ACCEPTED_FILES)
+					&& !preg_match('/\.part$/i', $filename)
 					&& time() - @filemtime($path_to_file) > SECONDS_OLD_BEFORE_SHOWING
 				) {
 					$GLOBALS['found'] = 1;
@@ -416,6 +417,7 @@ function list_files($files, $dir, $video, $list_directory, $level, $is_home = fa
 				$is_current = ($new_dir === $video) ? ' current' : '';
 				if (
 					accepted_mime_type($mime_type) 
+					&& !preg_match('/\.part$/i', $filename)
 					&& time() - @filemtime($new_dir) > SECONDS_OLD_BEFORE_SHOWING
 				) {
 					echo "<li class='deletable'>";
