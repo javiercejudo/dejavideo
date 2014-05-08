@@ -1,5 +1,5 @@
-<?php 
-if ($video) {	
+<?php
+if ($video) {
 	$video_js = VIDEOJS ? ' video-js vjs-default-skin' : '';
 	$poster = get_poster($video);
 	echo "<video id='main_video' class='display display_video$video_js' controls autoplay ";
@@ -14,7 +14,8 @@ if ($video) {
 	echo "Your browser does not support the video tag.";
 	echo "</video>";
 	echo "<p class='custom_controls' style='display:none;'>";
-	echo " <a href='javascript:;' class='ctrl time3 ctrl_lll'>-1min</a>";
+	echo " <a href='javascript:;' class='ctrl time4 ctrl_llll'>-5min</a>";
+	echo " <a href='javascript:;' class='ctrl time3 ctrl_lll'>-30s</a>";
 	echo " <a href='javascript:;' class='ctrl time2 ctrl_ll'>-10s</a>";
 	echo " <a href='javascript:;' class='ctrl time1 ctrl_l'>-3s</a>";
 	echo " <a href='javascript:;' class='ctrl vol vol_d'>-vol</a>";
@@ -22,7 +23,8 @@ if ($video) {
 	echo " <a href='javascript:;' class='ctrl vol vol_i'>+vol</a>";
 	echo " <a href='javascript:;' class='ctrl time1 ctrl_r'>+3s</a>";
 	echo " <a href='javascript:;' class='ctrl time2 ctrl_rr'>+10s</a>";
-	echo " <a href='javascript:;' class='ctrl time3 ctrl_rrr'>+1min</a>";
+	echo " <a href='javascript:;' class='ctrl time3 ctrl_rrr'>+30s</a>";
+	echo " <a href='javascript:;' class='ctrl time4 ctrl_rrrr'>+5min</a>";
 	echo "</p>";
 	echo "<p class='current_container'>";
 	echo "<span class='current' title='" . $n_video . "'>" . get_display_name(basename($n_video)) . "</span>";

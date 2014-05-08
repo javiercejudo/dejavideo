@@ -2,7 +2,7 @@
 
 function get_extension($path) {
 	$info = pathinfo($path);
-	return $info['extension'];
+	return !empty($info['extension']) ? $info['extension'] : '';
 }
 function get_dirname($path) {
 	$info = pathinfo($path);
@@ -17,12 +17,12 @@ function format_bytes($a_bytes) {
 	if ($a_bytes < 1024) {
 		return $a_bytes .'&nbsp;B';
 	} elseif ($a_bytes < 1048576) {
-		return round($a_bytes / 1024, 2) .'&nbsp;KiB';
+		return round($a_bytes / 1024, 0) .'&nbsp;KiB';
 	} elseif ($a_bytes < 1073741824) {
-		return round($a_bytes / 1048576, 2) . '&nbsp;MiB';
-	} elseif ($a_bytes < 1099511627776) {
-		return round($a_bytes / 1073741824, 2) . '&nbsp;GiB';
+		return round($a_bytes / 1048576, 0) . '&nbsp;MiB';
 	}
+
+	return round($a_bytes / 1073741824, 2) . '&nbsp;GiB';
 }
 
 function format_date($unix_timestamp) {
@@ -31,7 +31,7 @@ function format_date($unix_timestamp) {
 
 function time_ago($tm, $rcs = 1, $c_level = 1) {
 	// credit: http://css-tricks.com/snippets/php/time-ago-function/
-	$cur_tm = time(); 
+	$cur_tm = time();
 	$dif = $cur_tm-$tm;
 	$pds_lngh = array(
 		'second' => 1,
@@ -43,19 +43,19 @@ function time_ago($tm, $rcs = 1, $c_level = 1) {
 	);
 	$pds = array_keys($pds_lngh);
 	$lngh = array_values($pds_lngh);
-	for ($v = sizeof($lngh) - 1; $v >= 0 && ($no = $dif / $lngh[$v]) <= 1; $v--); 
+	for ($v = sizeof($lngh) - 1; $v >= 0 && ($no = $dif / $lngh[$v]) <= 1; $v--);
 	if ($v < 0) {
-		$v = 0; 
+		$v = 0;
 	}
 	$_tm = $cur_tm - ($dif % $lngh[$v]);
-	$no = floor($no); 
+	$no = floor($no);
 	if ($no <> 1) {
 		$pds[$v] .= 's';
 	}
 	$x = sprintf("%d %s ", $no, $pds[$v]);
 	if (
 		(
-			($rcs-1 >= 1) && ($c_level <= $rcs-1) 
+			($rcs-1 >= 1) && ($c_level <= $rcs-1)
 			|| $rcs == 0
 		)
 		&& ($v >= 1)
@@ -147,7 +147,7 @@ function add_recent_file($pathname, $file_md, $max_date, $recent_files, $amount)
 			array_pop($recent_files);
 		}
 		return $recent_files;
-	} 
+	}
 	return false;
 }
 
@@ -159,9 +159,9 @@ function get_recent_files($path = DATA, $amount = MAX_AMOUNT_RECENT_FILES, $sync
 	foreach ($dir as $file) {
 		$pathname = $file->getPathname();
 		if (
-			is_file($pathname) 
+			is_file($pathname)
 			&& (accepted_mime_type(get_mime_type($pathname)) || !ONLY_ACCEPTED_FILES)
-			&& substr($file->getFilename(), 0, 1) != "." 
+			&& substr($file->getFilename(), 0, 1) != "."
 			&& !preg_match('/\.part$/i', $file->getFilename())
 			&& time() - filemtime($pathname) > SECONDS_OLD_BEFORE_SHOWING
 		) {
@@ -286,7 +286,7 @@ function get_display_name($filename) {
 	foreach ($GLOBALS["ARRAY_DISPLAY_NAMES"] as $pattern => $replacement) {
 		$display_name = preg_replace($pattern, $replacement, $filename);
 		if (strcmp($filename, $display_name) !== 0) {
-			$stripped_separators = preg_replace('/[\._]/', ' ', $display_name);	
+			$stripped_separators = preg_replace('/[\._]/', ' ', $display_name);
 			$stripped_double_spaces = preg_replace('/[\ ]{2,}/', ' ', $stripped_separators);
 			return ucwords(strtolower(trim($stripped_double_spaces)));
 		}
@@ -305,7 +305,7 @@ function display_details($new_dir) {
 		echo format_bytes($filesize);
 	}
 	if ($filesize !== false && $filemtime !== false) {
-		echo " ⌚&nbsp;";
+		echo " &nbsp;–&nbsp; ";
 	}
 	if ($filemtime !== false) {
 		echo "<abbr class='timeago' title='" . date('c', $filemtime) . "'>" . format_date($filemtime, AGO_NUMBER_OF_UNITS) . "</abbr>";
@@ -320,8 +320,8 @@ function count_files($path, $count_files = false) {
 	$n = 0;
 	foreach ($dir as $file) {
 		if (
-			is_file($path . DS . $file) 
-			&& (accepted_mime_type(get_mime_type($path . DS . $file)) 
+			is_file($path . DS . $file)
+			&& (accepted_mime_type(get_mime_type($path . DS . $file))
 			|| !ONLY_ACCEPTED_FILES) && substr($file, 0, 1) != "."
 		) {
 			$n++;
@@ -374,7 +374,7 @@ function contains_supported_mime_types($dir) {
 
 function delete_file ($path) {
 	$result = array();
-	
+
 	try {
 		$unlink = @unlink(ROOT . DS . $path);
 		if ($unlink) {
@@ -416,7 +416,7 @@ function list_files($files, $dir, $video, $list_directory, $level, $is_home = fa
 			if (!is_dir($new_dir)) {
 				$is_current = ($new_dir === $video) ? ' current' : '';
 				if (
-					accepted_mime_type($mime_type) 
+					accepted_mime_type($mime_type)
 					&& !preg_match('/\.part$/i', $filename)
 					&& time() - @filemtime($new_dir) > SECONDS_OLD_BEFORE_SHOWING
 				) {
@@ -430,9 +430,9 @@ function list_files($files, $dir, $video, $list_directory, $level, $is_home = fa
 					if (DISPLAY_FILE_DETAILS) {
 						display_details($new_dir);
 					}
-					
+
 					echo "</p>";
-					
+
 					if (CAN_DELETE_FILES && $level === 2) {
 						echo '<div class="delete-icon invisible" title="Delete" data-file="' . $new_dir . '">';
 						echo '<a href="#">×<span class="delete-text">Delete</span></a>';
@@ -453,7 +453,7 @@ function list_files($files, $dir, $video, $list_directory, $level, $is_home = fa
 						if (DISPLAY_FILE_DETAILS) {
 							display_details($new_dir);
 						}
-						
+
 						echo "</p>";
 						echo "</li>";
 					}

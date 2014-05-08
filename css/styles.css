@@ -4,7 +4,6 @@ body {
 	font-family: Ubuntu, sans-serif;
 	margin: 0; padding: 0;
 	word-wrap: break-word;
-	overflow-y: scroll;
 }
 
 a {
@@ -300,7 +299,7 @@ video {
 		   -moz-column-count: 1;
 		        column-count: 1;
 	}
-	
+
 }
 
 /*
@@ -337,7 +336,7 @@ video {
 	.listing_container {
 		margin-top: 20px;
 	}
-	
+
 }
 
 /* Tablets only (portrait) ----------- */
