@@ -1,5 +1,7 @@
 # dejavideo
 
+_Dejavideo is discontinued, but I'm currently working on [dejavideo2](https://github.com/javiercejudo/dejavideo2), built from scratch with Node+Express in the backend and Angular in the frontend._
+
 Tested in PHP 5.3
 
 Check the demo page at [dejavideo.javiercejudo.com](http://dejavideo.javiercejudo.com/).
