@@ -1,4 +1,4 @@
-# dejavideo
+# DEPRECATED
 
 _Dejavideo is discontinued, but I'm currently working on [dejavideo2](https://github.com/javiercejudo/dejavideo2), built from scratch with Node+Express in the backend and Angular in the frontend._
 
